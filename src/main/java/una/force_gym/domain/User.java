@@ -2,7 +2,10 @@ package una.force_gym.domain;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 
 @Entity
@@ -13,11 +16,13 @@ public class User {
     @Column(name = "idUser")
     private Long idUser;
 
-    @Column(name = "idPerson")
-    private Long idPerson;
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "idPerson", referencedColumnName = "idPerson")
+    private Person person;
 
-    @Column(name = "idRole")
-    private Long idRole;
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "idRole", referencedColumnName = "idRole")
+    private Role role;
 
     @Column(name = "username")
     private String username;
@@ -27,10 +32,10 @@ public class User {
 
     public User(){}
 
-    public User(Long idUser, Long idPerson, Long idRole, String username, String password) {
+    public User(Long idUser, Person person, Role role, String username, String password) {
         this.idUser = idUser;
-        this.idPerson = idPerson;
-        this.idRole = idRole;
+        this.person = person;
+        this.role = role;
         this.username = username;
         this.password = password;
     }
@@ -43,20 +48,20 @@ public class User {
         this.idUser = idUser;
     }
 
-    public Long getIdPerson() {
-        return idPerson;
+    public Person getPerson() {
+        return person;
     }
 
-    public void setIdPerson(Long idPerson) {
-        this.idPerson = idPerson;
+    public void setPerson(Person person) {
+        this.person = person;
     }
 
-    public Long getIdRole() {
-        return idRole;
+    public Role getRole() {
+        return role;
     }
 
-    public void setIdRole(Long idRole) {
-        this.idRole = idRole;
+    public void setRole(Role role) {
+        this.role = role;
     }
 
     public String getUsername() {

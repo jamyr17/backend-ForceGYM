@@ -12,7 +12,7 @@ import jakarta.persistence.Table;
 public class Person {
     
     @Id
-    @Column(name = "IdPerson")
+    @Column(name = "idPerson")
     private Long idPerson;
 
     @Column(name = "name")
