@@ -5,17 +5,20 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
+
+import una.force_gym.domain.User;
+import una.force_gym.domain.UserDTO;
 import una.force_gym.service.UserService;
 import una.force_gym.util.ApiResponse;
-import una.force_gym.domain.User;
 
 @RestController
 @RequestMapping("/users")
@@ -39,10 +42,10 @@ public class UserController {
     }
 
     @PostMapping("/add")
-    public ResponseEntity<ApiResponse<String>> addUser(@RequestBody User user) {
+    public ResponseEntity<ApiResponse<String>> addUser(@RequestBody UserDTO userDTO) {
 
         try {
-            int result = userService.addUser(user.getIdRole(), user.getIdPerson(), user.getUsername(), user.getPassword());
+            int result = userService.addUser(userDTO.getIdRole(), userDTO.getIdPerson(), userDTO.getUsername(), userDTO.getPassword(), userDTO.getParamLoggedIdUser());
             ApiResponse<String> response;
 
             switch(result){
@@ -88,10 +91,10 @@ public class UserController {
     }
 
     @PutMapping("/update")
-    public ResponseEntity<ApiResponse<String>> updateUser(@RequestBody User user) {
+    public ResponseEntity<ApiResponse<String>> updateUser(@RequestBody UserDTO userDTO) {
 
         try {
-            int result = userService.updateUser(user.getIdUser(), user.getIdRole(), user.getIdPerson(), user.getUsername(), user.getPassword());
+            int result = userService.updateUser(userDTO.getIdUser(), userDTO.getIdRole(), userDTO.getIdPerson(), userDTO.getUsername(), userDTO.getPassword(), userDTO.getParamLoggedIdUser());
             ApiResponse<String> response;
 
             switch(result){
@@ -139,10 +142,10 @@ public class UserController {
     }
 
     @DeleteMapping("/delete/{idUser}")
-    public ResponseEntity<ApiResponse<String>> deleteUser(@PathVariable("idUser") Long idUser) {
+    public ResponseEntity<ApiResponse<String>> deleteUser(@PathVariable("idUser") Long idUser,  @RequestParam() Long paramLoggedIdUser) {
 
         try {  
-            int result = userService.deleteUser(idUser);
+            int result = userService.deleteUser(idUser, paramLoggedIdUser);
             ApiResponse<String> response;
 
             switch(result){

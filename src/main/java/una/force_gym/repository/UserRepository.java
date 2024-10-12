@@ -10,16 +10,16 @@ import una.force_gym.domain.User;
 
 public interface UserRepository extends JpaRepository<User, Long>{
     
-    @Procedure(procedureName = "prGetUser", outputParameterName = "result")
-    List<User> getUsers(@Param("result") int result); 
+    @Procedure(procedureName = "prGetUser")
+    List<User> getUsers(); 
 
     @Procedure(procedureName = "prInsertUser", outputParameterName = "result")
-    int addUser(@Param("pIdRole") Long pIdRole, @Param("pIdPerson") Long pIdPerson, @Param("pUsername") String pUsername, @Param("pPassword") String pPassword); 
+    int addUser(@Param("pIdRole") Long pIdRole, @Param("pIdPerson") Long pIdPerson, @Param("pUsername") String pUsername, @Param("pPassword") String pPassword, @Param("pLoggedIdUser") Long pLoggedIdUser); 
 
     @Procedure(procedureName = "prUpdateUser", outputParameterName = "result")
-    int updateUser(@Param("pIdUser") Long pIdUser, @Param("pIdRole") Long pIdRole, @Param("pIdPerson") Long pIdPerson, @Param("pUsername") String pUsername, @Param("pPassword") String pPassword); 
+    int updateUser(@Param("pIdUser") Long pIdUser, @Param("pIdRole") Long pIdRole, @Param("pIdPerson") Long pIdPerson, @Param("pUsername") String pUsername, @Param("pPassword") String pPassword, @Param("pLoggedIdUser") Long pLoggedIdUser); 
 
     @Procedure(procedureName = "prDeleteUser", outputParameterName = "result")
-    int deleteUser(@Param("pIdUser") Long pIdUser); 
+    int deleteUser(@Param("pIdUser") Long pIdUser, @Param("pLoggedIdUser") Long pLoggedIdUser); 
     
 }
