@@ -74,7 +74,6 @@ public class EconomicIncomeController {
             return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
 
         } catch (RuntimeException e) {
-            e.printStackTrace(); // Esto imprimirá el stack trace completo en la consola
             ApiResponse<String> response = new ApiResponse<>("Ocurrió un error al eliminar el ingreso económico.", null);
             return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR); 
         }
