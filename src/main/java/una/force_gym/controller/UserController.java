@@ -21,7 +21,7 @@ import una.force_gym.service.UserService;
 import una.force_gym.util.ApiResponse;
 
 @RestController
-@RequestMapping("/users")
+@RequestMapping("/user")
 public class UserController {
 
     @Autowired
