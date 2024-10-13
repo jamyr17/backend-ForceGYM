@@ -96,7 +96,7 @@ public class EconomicIncomeDTO {
         return paramLoggedIdUser;
     }
 
-    public void setParamnLoggedIdUser(Long paramLoggedIdUser) {
+    public void setParamLoggedIdUser(Long paramLoggedIdUser) {
         this.paramLoggedIdUser = paramLoggedIdUser;
     }
 
