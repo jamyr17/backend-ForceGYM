@@ -12,11 +12,11 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import una.force_gym.domain.EconomicExpense;
-import una.force_gym.domain.EconomicExpenseDTO;
+import una.force_gym.dto.EconomicExpenseDTO;
+import una.force_gym.dto.ParamLoggedIdUserDTO;
 import una.force_gym.service.EconomicExpenseService;
 import una.force_gym.util.ApiResponse;
 
@@ -127,10 +127,10 @@ public class EconomicExpenseController {
     }
 
     @DeleteMapping("/delete/{idEconomicExpense}")
-    public ResponseEntity<ApiResponse<String>> deleteEconomicExpense(@PathVariable("idEconomicExpense") Long idEconomicExpense, @RequestParam() Long paramLoggedIdUser) {
+    public ResponseEntity<ApiResponse<String>> deleteEconomicExpense(@PathVariable("idEconomicExpense") Long idEconomicExpense, @RequestBody ParamLoggedIdUserDTO paramLoggedIdUser) {
 
         try { 
-            int result = economicExpenseService.deleteEconomicExpense(idEconomicExpense, paramLoggedIdUser);
+            int result = economicExpenseService.deleteEconomicExpense(idEconomicExpense, paramLoggedIdUser.getParamLoggedIdUser());
             ApiResponse<String> response;
 
             switch(result){

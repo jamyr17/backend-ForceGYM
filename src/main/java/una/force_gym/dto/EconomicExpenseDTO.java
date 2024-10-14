@@ -1,4 +1,4 @@
-package una.force_gym.domain;
+package una.force_gym.dto;
 
 import java.time.LocalDate;
 
