@@ -12,11 +12,11 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import una.force_gym.domain.User;
-import una.force_gym.domain.UserDTO;
+import una.force_gym.dto.ParamLoggedIdUserDTO;
+import una.force_gym.dto.UserDTO;
+import una.force_gym.dto.UserFormDTO;
 import una.force_gym.service.UserService;
 import una.force_gym.util.ApiResponse;
 
@@ -28,24 +28,24 @@ public class UserController {
     private UserService userService;
 
     @GetMapping("/list")
-    public ResponseEntity<ApiResponse<List<User>>> getUsers() {
+    public ResponseEntity<ApiResponse<List<UserDTO>>> getUsers() {
         try {
-            List<User> users = userService.getUsers();
-            ApiResponse<List<User>> response = new ApiResponse<>("Usuarios obtenidos correctamente.", users);
+            List<UserDTO> users = userService.getUsers();
+            ApiResponse<List<UserDTO>> response = new ApiResponse<>("Usuarios obtenidos correctamente.", users);
             return new ResponseEntity<>(response, HttpStatus.OK); 
 
         } catch (RuntimeException e) {
-            ApiResponse<List<User>> response = new ApiResponse<>("Ocurrió un error al solicitar los datos de los usuarios.", null);
+            ApiResponse<List<UserDTO>> response = new ApiResponse<>("Ocurrió un error al solicitar los datos de los usuarios." + e.getMessage(), null);
             return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR); 
         }
 
     }
 
     @PostMapping("/add")
-    public ResponseEntity<ApiResponse<String>> addUser(@RequestBody UserDTO userDTO) {
+    public ResponseEntity<ApiResponse<String>> addUser(@RequestBody UserFormDTO userForm) {
 
         try {
-            int result = userService.addUser(userDTO.getIdRole(), userDTO.getIdPerson(), userDTO.getUsername(), userDTO.getPassword(), userDTO.getParamLoggedIdUser());
+            int result = userService.addUser(userForm.getIdRole(), userForm.getName(), userForm.getFirstLastName(), userForm.getSecondLastName(), userForm.getBirthday(), userForm.getIdentificationNumber(), userForm.getPhoneNumber(), userForm.getEmail(), userForm.getGender(), userForm.getUsername(), userForm.getPassword(), userForm.getParamLoggedIdUser());
             ApiResponse<String> response;
 
             switch(result){
@@ -60,10 +60,10 @@ public class UserController {
                     response = new ApiResponse<>("Ocurrió un error al agregar el nuevo usuario.", null);
                 }
                 
-                case -1 -> // no se encuentra el idPerson
+                case -1 -> // se encontró un idPerson previo
                 {
 
-                   response = new ApiResponse<>("No se pudo agregar el nuevo usuario debido a que la persona asociada no está registrada.", null);
+                   response = new ApiResponse<>("No se pudo agregar el nuevo usuario debido a que ya existe un usuario para la persona asociada.", null);
                 }
 
                 case -2 -> // no se encuentra el idRole
@@ -91,10 +91,10 @@ public class UserController {
     }
 
     @PutMapping("/update")
-    public ResponseEntity<ApiResponse<String>> updateUser(@RequestBody UserDTO userDTO) {
+    public ResponseEntity<ApiResponse<String>> updateUser(@RequestBody UserFormDTO userForm) {
 
         try {
-            int result = userService.updateUser(userDTO.getIdUser(), userDTO.getIdRole(), userDTO.getIdPerson(), userDTO.getUsername(), userDTO.getPassword(), userDTO.getParamLoggedIdUser());
+            int result = userService.updateUser(userForm.getIdUser(), userForm.getIdRole(), userForm.getIdPerson(), userForm.getName(), userForm.getFirstLastName(), userForm.getSecondLastName(), userForm.getBirthday(), userForm.getIdentificationNumber(), userForm.getPhoneNumber(), userForm.getEmail(), userForm.getGender(), userForm.getUsername(), userForm.getPassword(), userForm.getParamLoggedIdUser());
             ApiResponse<String> response;
 
             switch(result){
@@ -142,10 +142,10 @@ public class UserController {
     }
 
     @DeleteMapping("/delete/{idUser}")
-    public ResponseEntity<ApiResponse<String>> deleteUser(@PathVariable("idUser") Long idUser,  @RequestParam() Long paramLoggedIdUser) {
+    public ResponseEntity<ApiResponse<String>> deleteUser(@PathVariable("idUser") Long idUser,  @RequestBody ParamLoggedIdUserDTO paramLoggedIdUser) {
 
         try {  
-            int result = userService.deleteUser(idUser, paramLoggedIdUser);
+            int result = userService.deleteUser(idUser, paramLoggedIdUser.getParamLoggedIdUser());
             ApiResponse<String> response;
 
             switch(result){
