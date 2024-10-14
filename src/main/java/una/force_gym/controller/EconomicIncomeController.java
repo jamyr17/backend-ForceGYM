@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 import una.force_gym.domain.EconomicIncome;
 import una.force_gym.dto.EconomicIncomeDTO;
 import una.force_gym.dto.ParamLoggedIdUserDTO;
+import una.force_gym.exception.AppException;
 import una.force_gym.service.EconomicIncomeService;
 import una.force_gym.util.ApiResponse;
 
@@ -42,125 +43,89 @@ public class EconomicIncomeController {
     }
     
     @PostMapping("/add")
-    public ResponseEntity<ApiResponse<String>> addEconomicIncome(@RequestBody EconomicIncomeDTO economicIncomeDTO){
-        
-        try{
-            int result = economicIncomeService.addEconomicIncome(economicIncomeDTO.getIdUser(), economicIncomeDTO.getRegistrationDate(), economicIncomeDTO.getVoucherNumber(), economicIncomeDTO.getDetail(), economicIncomeDTO.getMeanOfPayment(), economicIncomeDTO.getAmount(), economicIncomeDTO.getActivityType(), economicIncomeDTO.getParamLoggedIdUser());
-            ApiResponse<String> response;
+    public ResponseEntity<ApiResponse<String>> addEconomicIncome(@RequestBody EconomicIncomeDTO economicIncomeDTO) {
+        int result = economicIncomeService.addEconomicIncome(
+            economicIncomeDTO.getIdUser(), 
+            economicIncomeDTO.getRegistrationDate(), 
+            economicIncomeDTO.getVoucherNumber(), 
+            economicIncomeDTO.getDetail(), 
+            economicIncomeDTO.getMeanOfPayment(), 
+            economicIncomeDTO.getAmount(), 
+            economicIncomeDTO.getActivityType(), 
+            economicIncomeDTO.getParamLoggedIdUser()
+        );
 
-            switch(result){
-                case 1 -> 
-                { 
-                    response = new ApiResponse<>("Ingreso económico agregado correctamente.", null);
-                    return new ResponseEntity<>(response, HttpStatus.OK); 
-                }
-
-                case 0 -> // error de mysql
-                {    
-                    response = new ApiResponse<>("Ocurrió un error al agregar el nuevo ingreso económico.", null);
-                }
-                
-                case -1 -> // no se encuentra el idUser
-                {
-
-                   response = new ApiResponse<>("No se pudo agregar el nuevo ingreso económico debido a que el usuario asociado no está registrado.", null);
-                }
-
-                default -> {
-                    throw new RuntimeException("Ingreso económico no agregado debido a problemas en la consulta.");
-                }
+        switch(result) {
+            case 1 -> 
+            { 
+                ApiResponse<String> response = new ApiResponse<>("Ingreso económico agregado correctamente.", null);
+                return new ResponseEntity<>(response, HttpStatus.OK); 
             }
 
-            return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
-
-        } catch (RuntimeException e) {
-            ApiResponse<String> response = new ApiResponse<>("Ocurrió un error al agregar el nuevo ingreso económico." + e.getMessage(), null);
-            return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR); 
+            // error de MySQL
+            case 0 -> throw new AppException("Ocurrió un error al agregar el nuevo ingreso económico.", HttpStatus.INTERNAL_SERVER_ERROR);
+            
+            // no se encuentra el idUser
+            case -1 -> throw new AppException("No se pudo agregar el nuevo ingreso económico debido a que el usuario asociado no está registrado.", HttpStatus.INTERNAL_SERVER_ERROR);
+            
+            default -> throw new AppException("Ingreso económico no agregado debido a problemas en la consulta.", HttpStatus.INTERNAL_SERVER_ERROR);
         }
 
     }
 
     @PutMapping("/update")
-    public ResponseEntity<ApiResponse<String>> updateEconomicIncome(@RequestBody EconomicIncomeDTO economicIncomeDTO){
-        
-        try{
-            int result = economicIncomeService.updateEconomicIncome(economicIncomeDTO.getIdEconomicIncome(), economicIncomeDTO.getIdUser(), economicIncomeDTO.getRegistrationDate(), economicIncomeDTO.getVoucherNumber(), economicIncomeDTO.getDetail(), economicIncomeDTO.getMeanOfPayment(), economicIncomeDTO.getAmount(), economicIncomeDTO.getActivityType(), economicIncomeDTO.getParamLoggedIdUser());
-            ApiResponse<String> response;
+    public ResponseEntity<ApiResponse<String>> updateEconomicIncome(@RequestBody EconomicIncomeDTO economicIncomeDTO) {
+        int result = economicIncomeService.updateEconomicIncome(
+            economicIncomeDTO.getIdEconomicIncome(), 
+            economicIncomeDTO.getIdUser(), 
+            economicIncomeDTO.getRegistrationDate(), 
+            economicIncomeDTO.getVoucherNumber(), 
+            economicIncomeDTO.getDetail(), 
+            economicIncomeDTO.getMeanOfPayment(), 
+            economicIncomeDTO.getAmount(), 
+            economicIncomeDTO.getActivityType(), 
+            economicIncomeDTO.getParamLoggedIdUser()
+        );
 
-            switch(result){
-                case 1 -> 
-                { 
-                    response = new ApiResponse<>("Ingreso económico actualizado correctamente.", null);
-                    return new ResponseEntity<>(response, HttpStatus.OK); 
-                }
-
-                case 0 -> // error de mysql
-                {    
-                    response = new ApiResponse<>("Ocurrió un error al actualizar el nuevo ingreso económico.", null);
-                }
-
-                case -1 -> // no se encuentra el idEconomicIncome
-                {
-
-                   response = new ApiResponse<>("No se pudo actualizar el ingreso económico debido a que no se encuentra el registro.", null);
-                }
-                
-                case -2 -> // no se encuentra el idUser
-                {
-
-                   response = new ApiResponse<>("No se pudo actualizar el ingreso económico debido a que el usuario asociado no está registrado.", null);
-                }
-                
-
-                default -> {
-                    throw new RuntimeException("Gasto conómico no actualizado debido a problemas en la consulta.");
-                }
+        switch(result) {
+            case 1 -> 
+            { 
+                ApiResponse<String> response = new ApiResponse<>("Ingreso económico actualizado correctamente.", null);
+                return new ResponseEntity<>(response, HttpStatus.OK); 
             }
 
-            return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
+            // error de MySQL
+            case 0 -> throw new AppException("Ocurrió un error al actualizar el ingreso económico.", HttpStatus.INTERNAL_SERVER_ERROR);
 
-        } catch (RuntimeException e) {
-            ApiResponse<String> response = new ApiResponse<>("Ocurrió un error al actualizar el ingreso económico.", null);
-            return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR); 
+            // no se encuentra el idEconomicIncome
+            case -1 -> throw new AppException("No se pudo actualizar el ingreso económico debido a que no se encuentra el registro.", HttpStatus.INTERNAL_SERVER_ERROR);
+
+            // no se encuentra el idUser
+            case -2 -> throw new AppException("No se pudo actualizar el ingreso económico debido a que el usuario asociado no está registrado.", HttpStatus.INTERNAL_SERVER_ERROR);
+            
+            default -> throw new AppException("Ingreso económico no actualizado debido a problemas en la consulta.", HttpStatus.INTERNAL_SERVER_ERROR);
         }
 
     }
 
     @DeleteMapping("/delete/{idEconomicIncome}")
     public ResponseEntity<ApiResponse<String>> deleteEconomicIncome(@PathVariable("idEconomicIncome") Long idEconomicIncome, @RequestBody ParamLoggedIdUserDTO paramLoggedIdUser) {
-
-        try { 
-            int result = economicIncomeService.deleteEconomicIncome(idEconomicIncome, paramLoggedIdUser.getParamLoggedIdUser());
-            ApiResponse<String> response;
-
-            switch(result){
-                case 1 ->
-                {
-                    response = new ApiResponse<>("Ingreso económico eliminado correctamente.", null);
-                    return new ResponseEntity<>(response, HttpStatus.OK); 
-                }
-                
-                case 0 -> // error de mysql
-                { 
-                    response = new ApiResponse<>("Ocurrió un error al eliminar el ingreso económico.", null);
-                }
-
-                case -1 -> // no se encuentra el idEconomicIncome
-                {    
-                    response = new ApiResponse<>("No se pudo eliminar el ingreso económico debido a que no se encuentra el registro.", null);
-                }
-
-                default -> 
-                {
-                    throw new RuntimeException("Ingreso económico no eliminado debido a problemas en la consulta.");
-                }
+        int result = economicIncomeService.deleteEconomicIncome(idEconomicIncome, paramLoggedIdUser.getParamLoggedIdUser());
+       
+        switch(result) {
+            case 1 -> 
+            { 
+                ApiResponse<String> response = new ApiResponse<>("Ingreso económico eliminado correctamente.", null);
+                return new ResponseEntity<>(response, HttpStatus.OK); 
             }
 
-            return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
+            // error de MySQL
+            case 0 -> throw new AppException("Ocurrió un error al eliminar el ingreso económico.", HttpStatus.INTERNAL_SERVER_ERROR);
 
-        } catch (RuntimeException e) {
-            ApiResponse<String> response = new ApiResponse<>("Ocurrió un error al eliminar el ingreso económico.", null);
-            return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR); 
+            // no se encuentra el idEconomicIncome
+            case -1 -> throw new AppException("No se pudo eliminar el ingreso económico debido a que no se encuentra el registro.", HttpStatus.INTERNAL_SERVER_ERROR);
+
+            default -> throw new AppException("Ingreso económico no eliminado debido a problemas en la consulta.", HttpStatus.INTERNAL_SERVER_ERROR);
         }
 
     }
