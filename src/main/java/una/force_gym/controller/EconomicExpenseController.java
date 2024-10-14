@@ -8,11 +8,15 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import una.force_gym.domain.EconomicExpense;
+import una.force_gym.domain.EconomicExpenseDTO;
 import una.force_gym.service.EconomicExpenseService;
 import una.force_gym.util.ApiResponse;
 
@@ -37,9 +41,90 @@ public class EconomicExpenseController {
         }
     }
     
-    // endpoint de add
+    @PostMapping("/add")
+    public ResponseEntity<ApiResponse<String>> addEconomicExpense(@RequestBody EconomicExpenseDTO economicExpenseDTO){
+        
+        try{
+            int result = economicExpenseService.addEconomicExpense(economicExpenseDTO.getIdUser(), economicExpenseDTO.getRegistrationDate(), economicExpenseDTO.getVoucherNumber(), economicExpenseDTO.getDetail(), economicExpenseDTO.getMeanOfPayment(), economicExpenseDTO.getAmount(), economicExpenseDTO.getParamLoggedIdUser());
+            ApiResponse<String> response;
 
-    // endpoint de update
+            switch(result){
+                case 1 -> 
+                { 
+                    response = new ApiResponse<>("Gasto económico agregado correctamente.", null);
+                    return new ResponseEntity<>(response, HttpStatus.OK); 
+                }
+
+                case 0 -> // error de mysql
+                {    
+                    response = new ApiResponse<>("Ocurrió un error al agregar el nuevo gasto económico.", null);
+                }
+                
+                case -1 -> // no se encuentra el idUser
+                {
+
+                   response = new ApiResponse<>("No se pudo agregar el nuevo gasto económico debido a que el usuario asociado no está registrado.", null);
+                }
+
+                default -> {
+                    throw new RuntimeException("Gasto económico no agregado debido a problemas en la consulta.");
+                }
+            }
+
+            return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
+
+        } catch (RuntimeException e) {
+            ApiResponse<String> response = new ApiResponse<>("Ocurrió un error al agregar el nuevo gasto económico", null);
+            return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR); 
+        }
+
+    }
+
+    @PutMapping("/update")
+    public ResponseEntity<ApiResponse<String>> updateEconomicExpense(@RequestBody EconomicExpenseDTO economicExpenseDTO){
+        
+        try{
+            int result = economicExpenseService.updateEconomicExpense(economicExpenseDTO.getIdEconomicExpense(), economicExpenseDTO.getIdUser(), economicExpenseDTO.getRegistrationDate(), economicExpenseDTO.getVoucherNumber(), economicExpenseDTO.getDetail(), economicExpenseDTO.getMeanOfPayment(), economicExpenseDTO.getAmount(), economicExpenseDTO.getParamLoggedIdUser());
+            ApiResponse<String> response;
+
+            switch(result){
+                case 1 -> 
+                { 
+                    response = new ApiResponse<>("Gasto económico actualizado correctamente.", null);
+                    return new ResponseEntity<>(response, HttpStatus.OK); 
+                }
+
+                case 0 -> // error de mysql
+                {    
+                    response = new ApiResponse<>("Ocurrió un error al actualizar el nuevo gasto económico.", null);
+                }
+
+                case -1 -> // no se encuentra el idEconomicExpense
+                {
+
+                   response = new ApiResponse<>("No se pudo actualizar el gasto económico debido a que no se encuentra el registro.", null);
+                }
+                
+                case -2 -> // no se encuentra el idUser
+                {
+
+                   response = new ApiResponse<>("No se pudo actualizar el gasto económico debido a que el usuario asociado no está registrado.", null);
+                }
+                
+
+                default -> {
+                    throw new RuntimeException("Gasto conómico no actualizado debido a problemas en la consulta.");
+                }
+            }
+
+            return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
+
+        } catch (RuntimeException e) {
+            ApiResponse<String> response = new ApiResponse<>("Ocurrió un error al actualizar el gasto económico.", null);
+            return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR); 
+        }
+
+    }
 
     @DeleteMapping("/delete/{idEconomicExpense}")
     public ResponseEntity<ApiResponse<String>> deleteEconomicExpense(@PathVariable("idEconomicExpense") Long idEconomicExpense, @RequestParam() Long paramLoggedIdUser) {

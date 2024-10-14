@@ -1,5 +1,6 @@
 package una.force_gym.service;
 
+import java.time.LocalDate;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,9 +21,15 @@ public class EconomicExpenseService {
         return economicExpenseRepo.getEconomicExpenses();
     }
 
-    // servicio de add
+    @Transactional
+    public int addEconomicExpense(Long pIdUser, LocalDate pRegistrationDate, String pVoucherNumber, String pDetail, String pMeanOfPayment, Float pAmount, Long pLoggedIdUser){
+        return economicExpenseRepo.addEconomicExpense(pIdUser, pRegistrationDate, pVoucherNumber, pDetail, pMeanOfPayment, pAmount, pLoggedIdUser);
+    }
 
-    // servicio de update
+    @Transactional
+    public int updateEconomicExpense(Long pIdEconomicExpense, Long pIdUser, LocalDate pRegistrationDate, String pVoucherNumber, String pDetail, String pMeanOfPayment, Float pAmount, Long pLoggedIdUser){
+        return economicExpenseRepo.updateEconomicExpense(pIdEconomicExpense, pIdUser, pRegistrationDate, pVoucherNumber, pDetail, pMeanOfPayment, pAmount, pLoggedIdUser);
+    }
 
     @Transactional
     public int deleteEconomicExpense(Long pIdEconomicExpense, Long pLoggedIdUser){
