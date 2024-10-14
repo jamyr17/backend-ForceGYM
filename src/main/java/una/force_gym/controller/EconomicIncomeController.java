@@ -12,11 +12,11 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import una.force_gym.domain.EconomicIncome;
-import una.force_gym.domain.EconomicIncomeDTO;
+import una.force_gym.dto.EconomicIncomeDTO;
+import una.force_gym.dto.ParamLoggedIdUserDTO;
 import una.force_gym.service.EconomicIncomeService;
 import una.force_gym.util.ApiResponse;
 
@@ -127,10 +127,10 @@ public class EconomicIncomeController {
     }
 
     @DeleteMapping("/delete/{idEconomicIncome}")
-    public ResponseEntity<ApiResponse<String>> deleteEconomicIncome(@PathVariable("idEconomicIncome") Long idEconomicIncome, @RequestParam() Long paramLoggedIdUser) {
+    public ResponseEntity<ApiResponse<String>> deleteEconomicIncome(@PathVariable("idEconomicIncome") Long idEconomicIncome, @RequestBody ParamLoggedIdUserDTO paramLoggedIdUser) {
 
         try { 
-            int result = economicIncomeService.deleteEconomicIncome(idEconomicIncome, paramLoggedIdUser);
+            int result = economicIncomeService.deleteEconomicIncome(idEconomicIncome, paramLoggedIdUser.getParamLoggedIdUser());
             ApiResponse<String> response;
 
             switch(result){
