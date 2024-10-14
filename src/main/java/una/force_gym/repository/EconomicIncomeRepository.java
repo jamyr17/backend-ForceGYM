@@ -1,5 +1,6 @@
 package una.force_gym.repository;
 
+import java.time.LocalDate;
 import java.util.List;
 
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -13,9 +14,11 @@ public interface EconomicIncomeRepository extends JpaRepository<EconomicIncome, 
     @Procedure(procedureName = "prGetEconomicIncome")
     List<EconomicIncome> getEconomicIncomes(); 
 
-    // procedure de add
+    @Procedure(procedureName = "prInsertEconomicIncome", outputParameterName = "result")
+    int addEconomicIncome(@Param("pIdUser") Long pIdUser, @Param("pRegistrationDate") LocalDate pRegistrationDate, @Param("pVoucherNumber") String pVoucherNumber, @Param("pDetail") String pDetail, @Param("pMeanOfPayment") String pMeanOfPayment, @Param("pAmount") Float pAmount, @Param("pActivityType") String pActivityType, @Param("pLoggedIdUser") Long pLoggedIdUser);
 
-    // procedure de update
+    @Procedure(procedureName = "prUpdateEconomicIncome", outputParameterName = "result")
+    int updateEconomicIncome(@Param("pIdEconomicIncome") Long pIdEconomicIncome, @Param("pIdUser") Long pIdUser, @Param("pRegistrationDate") LocalDate pRegistrationDate, @Param("pVoucherNumber") String pVoucherNumber, @Param("pDetail") String pDetail, @Param("pMeanOfPayment") String pMeanOfPayment, @Param("pAmount") Float pAmount, @Param("pActivityType") String pActivityType, @Param("pLoggedIdUser") Long pLoggedIdUser);
 
     @Procedure(procedureName = "prDeleteEconomicIncome")
     int deleteEconomicIncome(@Param("pIdEconomicIncome") Long pIdEconomicIncome, @Param("pLoggedIdUser") Long pLoggedIdUser);
