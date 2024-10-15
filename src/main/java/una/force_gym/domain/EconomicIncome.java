@@ -31,8 +31,9 @@ public class EconomicIncome {
     @Column(name = "detail")
     private String detail;
 
-    @Column(name = "meanOfPayment")
-    private String meanOfPayment;
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "idMeanOfPayment", referencedColumnName = "idMeanOfPayment")
+    private MeanOfPayment meanOfPayment;
 
     @Column(name = "amount")
     private Float amount;
@@ -42,7 +43,7 @@ public class EconomicIncome {
 
     public EconomicIncome() {}
 
-    public EconomicIncome(Long idEconomicIncome, User user, LocalDate registrationDate, String voucherNumber, String detail, String meanOfPayment, Float amount, String activityType) {
+    public EconomicIncome(Long idEconomicIncome, User user, LocalDate registrationDate, String voucherNumber, String detail, MeanOfPayment meanOfPayment, Float amount, String activityType) {
         this.idEconomicIncome = idEconomicIncome;
         this.user = user;
         this.registrationDate = registrationDate;
@@ -93,11 +94,11 @@ public class EconomicIncome {
         this.detail = detail;
     }
 
-    public String getMeanOfPayment() {
+    public MeanOfPayment getMeanOfPayment() {
         return meanOfPayment;
     }
 
-    public void setMeanOfPayment(String meanOfPayment) {
+    public void setMeanOfPayment(MeanOfPayment meanOfPayment) {
         this.meanOfPayment = meanOfPayment;
     }
 

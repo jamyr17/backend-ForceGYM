@@ -22,13 +22,13 @@ public class EconomicIncomeService {
     }
 
     @Transactional
-    public int addEconomicIncome(Long pIdUser, LocalDate pRegistrationDate, String pVoucherNumber, String pDetail, String pMeanOfPayment, Float pAmount, String pActivityType, Long pLoggedIdUser){
-        return economicIncomeRepo.addEconomicIncome(pIdUser, pRegistrationDate, pVoucherNumber, pDetail, pMeanOfPayment, pAmount, pActivityType, pLoggedIdUser);
+    public int addEconomicIncome(Long pIdUser, LocalDate pRegistrationDate, String pVoucherNumber, String pDetail, Long pIdMeanOfPayment, Float pAmount, String pActivityType, Long pLoggedIdUser){
+        return economicIncomeRepo.addEconomicIncome(pIdUser, pRegistrationDate, pVoucherNumber, pDetail, pIdMeanOfPayment, pAmount, pActivityType, pLoggedIdUser);
     }
 
     @Transactional
-    public int updateEconomicIncome(Long pIdEconomicIncome, Long pIdUser, LocalDate pRegistrationDate, String pVoucherNumber, String pDetail, String pMeanOfPayment, Float pAmount, String pActivityType, Long pLoggedIdUser){
-        return economicIncomeRepo.updateEconomicIncome(pIdEconomicIncome, pIdUser, pRegistrationDate, pVoucherNumber, pDetail, pMeanOfPayment, pAmount, pActivityType, pLoggedIdUser);
+    public int updateEconomicIncome(Long pIdEconomicIncome, Long pIdUser, LocalDate pRegistrationDate, String pVoucherNumber, String pDetail, Long pIdMeanOfPayment, Float pAmount, String pActivityType, Long pLoggedIdUser){
+        return economicIncomeRepo.updateEconomicIncome(pIdEconomicIncome, pIdUser, pRegistrationDate, pVoucherNumber, pDetail, pIdMeanOfPayment, pAmount, pActivityType, pLoggedIdUser);
     }
 
     @Transactional

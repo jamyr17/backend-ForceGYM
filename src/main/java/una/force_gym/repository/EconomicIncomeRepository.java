@@ -15,10 +15,10 @@ public interface EconomicIncomeRepository extends JpaRepository<EconomicIncome, 
     List<EconomicIncome> getEconomicIncomes(); 
 
     @Procedure(procedureName = "prInsertEconomicIncome", outputParameterName = "result")
-    int addEconomicIncome(@Param("pIdUser") Long pIdUser, @Param("pRegistrationDate") LocalDate pRegistrationDate, @Param("pVoucherNumber") String pVoucherNumber, @Param("pDetail") String pDetail, @Param("pMeanOfPayment") String pMeanOfPayment, @Param("pAmount") Float pAmount, @Param("pActivityType") String pActivityType, @Param("pLoggedIdUser") Long pLoggedIdUser);
+    int addEconomicIncome(@Param("pIdUser") Long pIdUser, @Param("pRegistrationDate") LocalDate pRegistrationDate, @Param("pVoucherNumber") String pVoucherNumber, @Param("pDetail") String pDetail, @Param("pIdMeanOfPayment") Long pIdMeanOfPayment, @Param("pAmount") Float pAmount, @Param("pActivityType") String pActivityType, @Param("pLoggedIdUser") Long pLoggedIdUser);
 
     @Procedure(procedureName = "prUpdateEconomicIncome", outputParameterName = "result")
-    int updateEconomicIncome(@Param("pIdEconomicIncome") Long pIdEconomicIncome, @Param("pIdUser") Long pIdUser, @Param("pRegistrationDate") LocalDate pRegistrationDate, @Param("pVoucherNumber") String pVoucherNumber, @Param("pDetail") String pDetail, @Param("pMeanOfPayment") String pMeanOfPayment, @Param("pAmount") Float pAmount, @Param("pActivityType") String pActivityType, @Param("pLoggedIdUser") Long pLoggedIdUser);
+    int updateEconomicIncome(@Param("pIdEconomicIncome") Long pIdEconomicIncome, @Param("pIdUser") Long pIdUser, @Param("pRegistrationDate") LocalDate pRegistrationDate, @Param("pVoucherNumber") String pVoucherNumber, @Param("pDetail") String pDetail, @Param("pIdMeanOfPayment") Long pIdMeanOfPayment, @Param("pAmount") Float pAmount, @Param("pActivityType") String pActivityType, @Param("pLoggedIdUser") Long pLoggedIdUser);
 
     @Procedure(procedureName = "prDeleteEconomicIncome")
     int deleteEconomicIncome(@Param("pIdEconomicIncome") Long pIdEconomicIncome, @Param("pLoggedIdUser") Long pLoggedIdUser);

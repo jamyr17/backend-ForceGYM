@@ -49,7 +49,7 @@ public class EconomicIncomeController {
             economicIncomeDTO.getRegistrationDate(), 
             economicIncomeDTO.getVoucherNumber(), 
             economicIncomeDTO.getDetail(), 
-            economicIncomeDTO.getMeanOfPayment(), 
+            economicIncomeDTO.getIdMeanOfPayment(), 
             economicIncomeDTO.getAmount(), 
             economicIncomeDTO.getActivityType(), 
             economicIncomeDTO.getParamLoggedIdUser()
@@ -81,7 +81,7 @@ public class EconomicIncomeController {
             economicIncomeDTO.getRegistrationDate(), 
             economicIncomeDTO.getVoucherNumber(), 
             economicIncomeDTO.getDetail(), 
-            economicIncomeDTO.getMeanOfPayment(), 
+            economicIncomeDTO.getIdMeanOfPayment(), 
             economicIncomeDTO.getAmount(), 
             economicIncomeDTO.getActivityType(), 
             economicIncomeDTO.getParamLoggedIdUser()
