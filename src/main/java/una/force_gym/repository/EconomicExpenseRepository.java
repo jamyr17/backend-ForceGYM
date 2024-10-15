@@ -15,10 +15,10 @@ public interface EconomicExpenseRepository extends JpaRepository<EconomicExpense
     List<EconomicExpense> getEconomicExpenses(); 
 
     @Procedure(procedureName = "prInsertEconomicExpense", outputParameterName = "result")
-    int addEconomicExpense(@Param("pIdUser") Long pIdUser, @Param("pRegistrationDate") LocalDate pRegistrationDate, @Param("pVoucherNumber") String pVoucherNumber, @Param("pDetail") String pDetail, @Param("pMeanOfPayment") String pMeanOfPayment, @Param("pAmount") Float pAmount, @Param("pLoggedIdUser") Long pLoggedIdUser);
+    int addEconomicExpense(@Param("pIdUser") Long pIdUser, @Param("pRegistrationDate") LocalDate pRegistrationDate, @Param("pVoucherNumber") String pVoucherNumber, @Param("pDetail") String pDetail, @Param("pIdMeanOfPayment") Long pIdMeanOfPayment, @Param("pAmount") Float pAmount, @Param("pLoggedIdUser") Long pLoggedIdUser);
 
     @Procedure(procedureName = "prUpdateEconomicExpense", outputParameterName = "result")
-    int updateEconomicExpense(@Param("pIdEconomicExpense") Long pIdEconomicExpense, @Param("pIdUser") Long pIdUser, @Param("pRegistrationDate") LocalDate pRegistrationDate, @Param("pVoucherNumber") String pVoucherNumber, @Param("pDetail") String pDetail, @Param("pMeanOfPayment") String pMeanOfPayment, @Param("pAmount") Float pAmount, @Param("pLoggedIdUser") Long pLoggedIdUser);
+    int updateEconomicExpense(@Param("pIdEconomicExpense") Long pIdEconomicExpense, @Param("pIdUser") Long pIdUser, @Param("pRegistrationDate") LocalDate pRegistrationDate, @Param("pVoucherNumber") String pVoucherNumber, @Param("pDetail") String pDetail, @Param("pIdMeanOfPayment") Long pIdMeanOfPayment, @Param("pAmount") Float pAmount, @Param("pLoggedIdUser") Long pLoggedIdUser);
 
     @Procedure(procedureName = "prDeleteEconomicExpense")
     int deleteEconomicExpense(@Param("pIdEconomicExpense") Long pIdEconomicExpense, @Param("pLoggedIdUser") Long pLoggedIdUser);

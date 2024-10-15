@@ -10,19 +10,19 @@ public class EconomicExpenseDTO {
     private LocalDate registrationDate;
     private String voucherNumber;
     private String detail;
-    private String meanOfPayment;
+    private Long idMeanOfPayment;
     private Float amount;
     private Long paramLoggedIdUser;
 
     public EconomicExpenseDTO (){}
     
-    public EconomicExpenseDTO(Long idEconomicExpense, Long idUser, LocalDate registrationDate, String voucherNumber, String detail, String meanOfPayment, Float amount, Long paramLoggedIdUser) {
+    public EconomicExpenseDTO(Long idEconomicExpense, Long idUser, LocalDate registrationDate, String voucherNumber, String detail, Long idMeanOfPayment, Float amount, Long paramLoggedIdUser) {
         this.idEconomicExpense = idEconomicExpense;
         this.idUser = idUser;
         this.registrationDate = registrationDate;
         this.voucherNumber = voucherNumber;
         this.detail = detail;
-        this.meanOfPayment = meanOfPayment;
+        this.idMeanOfPayment = idMeanOfPayment;
         this.amount = amount;
         this.paramLoggedIdUser = paramLoggedIdUser;
     }
@@ -67,12 +67,12 @@ public class EconomicExpenseDTO {
         this.detail = detail;
     }
 
-    public String getMeanOfPayment() {
-        return meanOfPayment;
+    public Long getIdMeanOfPayment() {
+        return idMeanOfPayment;
     }
 
-    public void setMeanOfPayment(String meanOfPayment) {
-        this.meanOfPayment = meanOfPayment;
+    public void setIdMeanOfPayment(Long idMeanOfPayment) {
+        this.idMeanOfPayment = idMeanOfPayment;
     }
 
     public Float getAmount() {

@@ -49,7 +49,7 @@ public class EconomicExpenseController {
             economicExpenseDTO.getRegistrationDate(), 
             economicExpenseDTO.getVoucherNumber(), 
             economicExpenseDTO.getDetail(), 
-            economicExpenseDTO.getMeanOfPayment(), 
+            economicExpenseDTO.getIdMeanOfPayment(), 
             economicExpenseDTO.getAmount(), 
             economicExpenseDTO.getParamLoggedIdUser()
         );
@@ -77,7 +77,7 @@ public class EconomicExpenseController {
             economicExpenseDTO.getRegistrationDate(),
             economicExpenseDTO.getVoucherNumber(),
             economicExpenseDTO.getDetail(),
-            economicExpenseDTO.getMeanOfPayment(),
+            economicExpenseDTO.getIdMeanOfPayment(),
             economicExpenseDTO.getAmount(),
             economicExpenseDTO.getParamLoggedIdUser()
         );
