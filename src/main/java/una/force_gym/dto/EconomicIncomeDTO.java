@@ -11,12 +11,12 @@ public class EconomicIncomeDTO {
     private String detail;
     private Long idMeanOfPayment;
     private Float amount;
-    private String activityType;
+    private Long idActivityType;
     private Long paramLoggedIdUser;
 
     public EconomicIncomeDTO() {}
 
-    public EconomicIncomeDTO(Long idEconomicIncome, Long idUser, LocalDate registrationDate, String voucherNumber, String detail, Long idMeanOfPayment, Float amount, String activityType, Long paramLoggedIdUser) {
+    public EconomicIncomeDTO(Long idEconomicIncome, Long idUser, LocalDate registrationDate, String voucherNumber, String detail, Long idMeanOfPayment, Float amount, Long idActivityType, Long paramLoggedIdUser) {
         this.idEconomicIncome = idEconomicIncome;
         this.idUser = idUser;
         this.registrationDate = registrationDate;
@@ -24,7 +24,7 @@ public class EconomicIncomeDTO {
         this.detail = detail;
         this.idMeanOfPayment = idMeanOfPayment;
         this.amount = amount;
-        this.activityType = activityType;
+        this.idActivityType = idActivityType;
         this.paramLoggedIdUser = paramLoggedIdUser;
     }
 
@@ -84,12 +84,12 @@ public class EconomicIncomeDTO {
         this.amount = amount;
     }
 
-    public String getActivityType() {
-        return activityType;
+    public Long getIdActivityType() {
+        return idActivityType;
     }
 
-    public void setActivityType(String activityType) {
-        this.activityType = activityType;
+    public void setIdActivityType(Long idActivityType) {
+        this.idActivityType = idActivityType;
     }
 
     public Long getParamLoggedIdUser() {

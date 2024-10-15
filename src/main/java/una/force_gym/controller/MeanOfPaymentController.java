@@ -23,8 +23,8 @@ public class MeanOfPaymentController {
     @GetMapping("/list")
     public ResponseEntity<ApiResponse<List<MeanOfPayment>>> getRoles() {
         try {
-            List<MeanOfPayment> roles = meanOfPaymentService.getMeansOfPayment();
-            ApiResponse<List<MeanOfPayment>> response = new ApiResponse<>("Métodos de pago obtenidos correctamente.", roles);
+            List<MeanOfPayment> meansOfPayment = meanOfPaymentService.getMeansOfPayment();
+            ApiResponse<List<MeanOfPayment>> response = new ApiResponse<>("Métodos de pago obtenidos correctamente.", meansOfPayment);
             return new ResponseEntity<>(response, HttpStatus.OK); 
 
         } catch (RuntimeException e) {

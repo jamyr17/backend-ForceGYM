@@ -16,8 +16,7 @@ public class MeanOfPayment {
     @Column(name = "name")
     private String name;
 
-    public MeanOfPayment() {
-    }
+    public MeanOfPayment() {}
 
     public MeanOfPayment(Long idMeanOfPayment, String name) {
         this.idMeanOfPayment = idMeanOfPayment;
