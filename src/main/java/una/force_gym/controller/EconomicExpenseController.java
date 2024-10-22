@@ -3,6 +3,7 @@ package una.force_gym.controller;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -30,6 +31,20 @@ public class EconomicExpenseController {
     private EconomicExpenseService economicExpenseService;
 
     @GetMapping("/list")
+    public ResponseEntity<ApiResponse<Page<EconomicExpense>>> getEconomicExpenses() {
+        try {
+            final
+            List<EconomicExpense> economicExpenses = economicExpenseService.getEconomicExpenses();
+            ApiResponse<List<EconomicExpense>> response = new ApiResponse<>("Gastos económicos obtenidos correctamente.", economicExpenses);
+            return new ResponseEntity<>(response, HttpStatus.OK); 
+
+        } catch (RuntimeException e) {
+            ApiResponse<List<EconomicExpense>> response = new ApiResponse<>("Ocurrió un error al solicitar los datos de los gastos económicos.", null);
+            return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR); 
+        }
+    }
+/* 
+    @GetMapping("/list")
     public ResponseEntity<ApiResponse<List<EconomicExpense>>> getEconomicExpenses() {
         try {
             List<EconomicExpense> economicExpenses = economicExpenseService.getEconomicExpenses();
@@ -41,7 +56,7 @@ public class EconomicExpenseController {
             return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR); 
         }
     }
-
+*/
     @PostMapping("/add")
     public ResponseEntity<ApiResponse<String>> addEconomicExpense(@RequestBody EconomicExpenseDTO economicExpenseDTO) {
         int result = economicExpenseService.addEconomicExpense(
