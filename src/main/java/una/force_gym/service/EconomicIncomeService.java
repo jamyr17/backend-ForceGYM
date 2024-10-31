@@ -17,8 +17,8 @@ public class EconomicIncomeService {
     private EconomicIncomeRepository economicIncomeRepo;
 
     @Transactional
-    public List<EconomicIncome> getEconomicIncomes(){
-        return economicIncomeRepo.getEconomicIncomes();
+    public List<EconomicIncome> getEconomicIncomes(int page, int size){
+        return economicIncomeRepo.getEconomicIncomes(page, size);
     }
 
     @Transactional

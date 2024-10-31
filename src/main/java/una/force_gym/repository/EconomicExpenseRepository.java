@@ -12,7 +12,8 @@ import una.force_gym.domain.EconomicExpense;
 public interface EconomicExpenseRepository extends JpaRepository<EconomicExpense, Long>{
 
     @Procedure(procedureName = "prGetEconomicExpense")
-    List<EconomicExpense> getEconomicExpenses(); 
+    List<EconomicExpense> getEconomicExpenses(@Param("p_page") int p_page, @Param("p_limit") int p_limit);
+
 
     @Procedure(procedureName = "prInsertEconomicExpense", outputParameterName = "result")
     int addEconomicExpense(@Param("pIdUser") Long pIdUser, @Param("pRegistrationDate") LocalDate pRegistrationDate, @Param("pVoucherNumber") String pVoucherNumber, @Param("pDetail") String pDetail, @Param("pIdMeanOfPayment") Long pIdMeanOfPayment, @Param("pAmount") Float pAmount, @Param("pLoggedIdUser") Long pLoggedIdUser);

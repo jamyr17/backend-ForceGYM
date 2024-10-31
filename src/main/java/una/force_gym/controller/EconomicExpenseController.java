@@ -3,7 +3,6 @@ package una.force_gym.controller;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -13,6 +12,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import una.force_gym.domain.EconomicExpense;
@@ -31,32 +31,20 @@ public class EconomicExpenseController {
     private EconomicExpenseService economicExpenseService;
 
     @GetMapping("/list")
-    public ResponseEntity<ApiResponse<Page<EconomicExpense>>> getEconomicExpenses() {
+    public ResponseEntity<ApiResponse<List<EconomicExpense>>> getEconomicExpenses(
+            @RequestParam(defaultValue = "1") int page,
+            @RequestParam(defaultValue = "10") int size) {
         try {
-            final
-            List<EconomicExpense> economicExpenses = economicExpenseService.getEconomicExpenses();
+            List<EconomicExpense> economicExpenses = economicExpenseService.getEconomicExpenses(page, size);
             ApiResponse<List<EconomicExpense>> response = new ApiResponse<>("Gastos económicos obtenidos correctamente.", economicExpenses);
             return new ResponseEntity<>(response, HttpStatus.OK); 
-
         } catch (RuntimeException e) {
             ApiResponse<List<EconomicExpense>> response = new ApiResponse<>("Ocurrió un error al solicitar los datos de los gastos económicos.", null);
             return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR); 
         }
     }
-/* 
-    @GetMapping("/list")
-    public ResponseEntity<ApiResponse<List<EconomicExpense>>> getEconomicExpenses() {
-        try {
-            List<EconomicExpense> economicExpenses = economicExpenseService.getEconomicExpenses();
-            ApiResponse<List<EconomicExpense>> response = new ApiResponse<>("Gastos económicos obtenidos correctamente.", economicExpenses);
-            return new ResponseEntity<>(response, HttpStatus.OK); 
 
-        } catch (RuntimeException e) {
-            ApiResponse<List<EconomicExpense>> response = new ApiResponse<>("Ocurrió un error al solicitar los datos de los gastos económicos.", null);
-            return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR); 
-        }
-    }
-*/
+
     @PostMapping("/add")
     public ResponseEntity<ApiResponse<String>> addEconomicExpense(@RequestBody EconomicExpenseDTO economicExpenseDTO) {
         int result = economicExpenseService.addEconomicExpense(

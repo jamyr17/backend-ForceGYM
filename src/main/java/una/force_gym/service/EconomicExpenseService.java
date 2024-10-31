@@ -17,9 +17,10 @@ public class EconomicExpenseService {
     private EconomicExpenseRepository economicExpenseRepo;
 
     @Transactional
-    public List<EconomicExpense> getEconomicExpenses(){
-        return economicExpenseRepo.getEconomicExpenses();
+    public List<EconomicExpense> getEconomicExpenses(int page, int size) {
+        return economicExpenseRepo.getEconomicExpenses(page, size);
     }
+
 
     @Transactional
     public int addEconomicExpense(Long pIdUser, LocalDate pRegistrationDate, String pVoucherNumber, String pDetail, Long pIdMeanOfPayment, Float pAmount, Long pLoggedIdUser){

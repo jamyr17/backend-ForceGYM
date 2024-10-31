@@ -12,8 +12,10 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import una.force_gym.domain.EconomicExpense;
 import una.force_gym.domain.EconomicIncome;
 import una.force_gym.dto.EconomicIncomeDTO;
 import una.force_gym.dto.ParamLoggedIdUserDTO;
@@ -30,9 +32,11 @@ public class EconomicIncomeController {
     private EconomicIncomeService economicIncomeService;
 
     @GetMapping("/list")
-    public ResponseEntity<ApiResponse<List<EconomicIncome>>> getEconomicIncomes() {
+    public ResponseEntity<ApiResponse<List<EconomicIncome>>> getEconomicIncomes(
+        @RequestParam(defaultValue = "1") int page,
+        @RequestParam(defaultValue = "10") int size) {
         try {
-            List<EconomicIncome> economicIncomes = economicIncomeService.getEconomicIncomes();
+            List<EconomicIncome> economicIncomes = economicIncomeService.getEconomicIncomes(page, size);
             ApiResponse<List<EconomicIncome>> response = new ApiResponse<>("Ingresos económicos obtenidos correctamente.", economicIncomes);
             return new ResponseEntity<>(response, HttpStatus.OK); 
 
