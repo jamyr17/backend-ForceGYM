@@ -7,7 +7,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.query.Procedure;
 import org.springframework.data.repository.query.Param;
 
-import una.force_gym.domain.EconomicExpense;
 import una.force_gym.domain.EconomicIncome;
 
 public interface EconomicIncomeRepository extends JpaRepository<EconomicIncome, Long>{

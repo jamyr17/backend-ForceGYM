@@ -15,7 +15,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import una.force_gym.domain.EconomicExpense;
 import una.force_gym.domain.EconomicIncome;
 import una.force_gym.dto.EconomicIncomeDTO;
 import una.force_gym.dto.ParamLoggedIdUserDTO;

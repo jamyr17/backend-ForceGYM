@@ -21,7 +21,6 @@ public class EconomicExpenseService {
         return economicExpenseRepo.getEconomicExpenses(page, size);
     }
 
-
     @Transactional
     public int addEconomicExpense(Long pIdUser, LocalDate pRegistrationDate, String pVoucherNumber, String pDetail, Long pIdMeanOfPayment, Float pAmount, Long pLoggedIdUser){
         return economicExpenseRepo.addEconomicExpense(pIdUser, pRegistrationDate, pVoucherNumber, pDetail, pIdMeanOfPayment, pAmount, pLoggedIdUser);
