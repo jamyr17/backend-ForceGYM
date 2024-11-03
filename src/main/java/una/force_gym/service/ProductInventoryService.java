@@ -20,6 +20,10 @@ public class ProductInventoryService {
         return productInventoryRepo.getProductsInventory(page, size);
     }
 
+    public Long countActiveProductsInventory(){
+        return productInventoryRepo.countByIsDeleted(Long.valueOf(0));
+    }
+
     @Transactional
     public int addProductInventory(Long pIdUser, String code, String name, int quantity, Float cost, Long pLoggedIdUser){
         return productInventoryRepo.addProductInventory(pIdUser, code, name, quantity, cost, pLoggedIdUser);

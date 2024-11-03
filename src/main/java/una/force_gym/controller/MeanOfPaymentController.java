@@ -21,7 +21,7 @@ public class MeanOfPaymentController {
     private MeanOfPaymentService meanOfPaymentService;
 
     @GetMapping("/list")
-    public ResponseEntity<ApiResponse<List<MeanOfPayment>>> getRoles() {
+    public ResponseEntity<ApiResponse<List<MeanOfPayment>>> getMeansOfPayment() {
         try {
             List<MeanOfPayment> meansOfPayment = meanOfPaymentService.getMeansOfPayment();
             ApiResponse<List<MeanOfPayment>> response = new ApiResponse<>("Métodos de pago obtenidos correctamente.", meansOfPayment);

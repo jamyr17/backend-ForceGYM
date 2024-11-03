@@ -1,6 +1,8 @@
 package una.force_gym.controller;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -30,16 +32,22 @@ public class ProductInventoryController {
     private ProductInventoryService productInventoryService;
 
     @GetMapping("/list")
-    public ResponseEntity<ApiResponse<List<ProductInventory>>> getProductInventorys(
+    public ResponseEntity<ApiResponse<Map<String, Object>>> getProductInventorys(
         @RequestParam(defaultValue = "1") int page,
         @RequestParam(defaultValue = "10") int size) {
         try {
-            List<ProductInventory> productosInventory = productInventoryService.getProductsInventory(page, size);
-            ApiResponse<List<ProductInventory>> response = new ApiResponse<>("Productos de inventario obtenidos correctamente.", productosInventory);
+            List<ProductInventory> productsInventory = productInventoryService.getProductsInventory(page, size);
+            Long totalRecords = productInventoryService.countActiveProductsInventory();
+
+            Map<String, Object> responseData = new HashMap<>();
+            responseData.put("productsInventory", productsInventory);
+            responseData.put("totalRecords", totalRecords);
+
+            ApiResponse<Map<String, Object>> response = new ApiResponse<>("Productos de inventario obtenidos correctamente.", responseData);
             return new ResponseEntity<>(response, HttpStatus.OK); 
 
         } catch (RuntimeException e) {
-            ApiResponse<List<ProductInventory>> response = new ApiResponse<>("Ocurrió un error al solicitar los datos de los productos de inventario.", null);
+            ApiResponse<Map<String, Object>> response = new ApiResponse<>("Ocurrió un error al solicitar los datos de los productos de inventario.", null);
             return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR); 
         }
     }

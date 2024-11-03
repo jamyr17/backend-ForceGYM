@@ -32,15 +32,19 @@ public class ProductInventory {
     @Column(name = "cost")
     private Float cost;
 
+    @Column(name = "isDeleted")
+    private Long isDeleted;
+
     public ProductInventory() {}
 
-    public ProductInventory(String code, Float cost, Long idProductInventory, String name, int quantity, User user) {
+    public ProductInventory(String code, Float cost, Long idProductInventory, String name, int quantity, User user, Long isDeleted) {
         this.code = code;
         this.cost = cost;
         this.idProductInventory = idProductInventory;
         this.name = name;
         this.quantity = quantity;
         this.user = user;
+        this.isDeleted = isDeleted;
     }
 
     public Long getIdProductInventory() {
@@ -89,6 +93,14 @@ public class ProductInventory {
 
     public void setCost(Float cost) {
         this.cost = cost;
+    }
+
+    public Long getIsDeleted() {
+        return isDeleted;
+    }
+
+    public void setIsDeleted(Long isDeleted) {
+        this.isDeleted = isDeleted;
     }
 
 }

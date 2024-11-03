@@ -13,6 +13,8 @@ public interface ProductInventoryRepository extends JpaRepository<ProductInvento
     @Procedure(procedureName = "prGetProductInventory")
     List<ProductInventory> getProductsInventory(@Param("p_page") int p_page, @Param("p_limit") int p_limit);
 
+    Long countByIsDeleted(Long isDeleted);
+
     @Procedure(procedureName = "prInsertProductInventory", outputParameterName = "result")
     int addProductInventory(@Param("pIdUser") Long pIdUser, @Param("pCode") String pCode, @Param("pName") String pName, @Param("pQuantity") int pQuantity, @Param("pCost") Float pCost, @Param("pLoggedIdUser") Long pLoggedIdUser);
 
