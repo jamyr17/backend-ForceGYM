@@ -20,6 +20,6 @@ public interface UserRepository extends JpaRepository<User, Long>{
     @Procedure(procedureName = "prDeleteUser", outputParameterName = "result")
     int deleteUser(@Param("pIdUser") Long pIdUser, @Param("pLoggedIdUser") Long pLoggedIdUser); 
 
-    Optional<User> findByUsername(String username);
+    Optional<User> findByUsernameAndIsDeleted(String username, Long isDeleted);
     
 }

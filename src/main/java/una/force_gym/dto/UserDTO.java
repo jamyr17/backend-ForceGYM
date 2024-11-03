@@ -29,13 +29,17 @@ public class UserDTO {
     @Column(name = "username")
     private String username;
 
+    @Column(name = "isDeleted")
+    private Long isDeleted;
+
     public UserDTO(){}
 
-    public UserDTO(Long idUser, Person person, Role role, String username) {
+    public UserDTO(Long idUser, Person person, Role role, String username, Long isDeleted) {
         this.idUser = idUser;
         this.person = person;
         this.role = role;
         this.username = username;
+        this.isDeleted = isDeleted;
     }
 
     public Long getIdUser() {
@@ -68,6 +72,14 @@ public class UserDTO {
 
     public void setUsername(String username) {
         this.username = username;
+    }
+
+    public Long getIsDeleted() {
+        return isDeleted;
+    }
+
+    public void setIsDeleted(Long isDeleted) {
+        this.isDeleted = isDeleted;
     }
 
 }

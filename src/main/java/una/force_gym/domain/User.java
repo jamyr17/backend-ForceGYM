@@ -30,14 +30,17 @@ public class User {
     @Column(name = "password")
     private String password;
 
+    private Long isDeleted;
+
     public User(){}
 
-    public User(Long idUser, Person person, Role role, String username, String password) {
+    public User(Long idUser, Person person, Role role, String username, String password, Long isDeleted) {
         this.idUser = idUser;
         this.person = person;
         this.role = role;
         this.username = username;
         this.password = password;
+        this.isDeleted = isDeleted;
     }
 
     public Long getIdUser() {
@@ -78,6 +81,14 @@ public class User {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public Long getIsDeleted() {
+        return isDeleted;
+    }
+
+    public void setIsDeleted(Long isDeleted) {
+        this.isDeleted = isDeleted;
     }
 
 }

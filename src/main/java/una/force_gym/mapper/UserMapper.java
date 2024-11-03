@@ -18,7 +18,8 @@ public class UserMapper {
             user.getIdUser(),
             user.getPerson(),
             user.getRole(),
-            user.getUsername()
+            user.getUsername(),
+            user.getIsDeleted()
         );
     }
 

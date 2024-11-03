@@ -1,6 +1,8 @@
 package una.force_gym.controller;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -12,6 +14,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import una.force_gym.dto.ParamLoggedIdUserDTO;
@@ -29,14 +32,22 @@ public class UserController {
     private UserService userService;
 
     @GetMapping("/list")
-    public ResponseEntity<ApiResponse<List<UserDTO>>> getUsers() {
+    public ResponseEntity<ApiResponse<Map<String, Object>>> getUsers( 
+            @RequestParam(defaultValue = "1") int page,
+            @RequestParam(defaultValue = "10") int size)  {
         try {
-            List<UserDTO> users = userService.getUsers();
-            ApiResponse<List<UserDTO>> response = new ApiResponse<>("Usuarios obtenidos correctamente.", users);
+            List<UserDTO> users = userService.getUsers(page, size);
+            Long totalRecords = userService.countActiveUsers();
+
+            Map<String, Object> responseData = new HashMap<>();
+            responseData.put("users", users);
+            responseData.put("totalRecords", totalRecords);
+
+            ApiResponse<Map<String, Object>> response = new ApiResponse<>("Usuarios obtenidos correctamente.", responseData);
             return new ResponseEntity<>(response, HttpStatus.OK); 
 
         } catch (RuntimeException e) {
-            ApiResponse<List<UserDTO>> response = new ApiResponse<>("Ocurrió un error al solicitar los datos de los usuarios." + e.getMessage(), null);
+            ApiResponse<Map<String, Object>> response = new ApiResponse<>("Ocurrió un error al solicitar los datos de los usuarios", null);
             return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR); 
         }
 

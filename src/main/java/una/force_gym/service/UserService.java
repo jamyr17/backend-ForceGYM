@@ -35,8 +35,12 @@ public class UserService {
     private UserMapper userMapper;
     
     @Transactional
-    public List<UserDTO> getUsers(){
-        return userDTORepo.getUsers();
+    public List<UserDTO> getUsers(int page, int size){
+        return userDTORepo.getUsers(page, size);
+    }
+
+    public Long countActiveUsers(){
+        return userDTORepo.countByIsDeleted(Long.valueOf(0));
     }
 
     @Transactional
@@ -58,7 +62,7 @@ public class UserService {
 
     @Transactional
     public LoginDTO login(CredentialsDTO credentialsDTO) {
-        User user = userRepo.findByUsername(credentialsDTO.getUsername())
+        User user = userRepo.findByUsernameAndIsDeleted(credentialsDTO.getUsername(), Long.valueOf(0))
                 .orElseThrow(() -> new AppException("Usuario inválido", HttpStatus.NOT_FOUND));
 
         if (passwordEncoder.matches(CharBuffer.wrap(credentialsDTO.getPassword()), user.getPassword())) {
@@ -69,7 +73,7 @@ public class UserService {
 
     @Transactional
     public UserDTO findByUsername(String username) {
-        User user = userRepo.findByUsername(username)
+        User user = userRepo.findByUsernameAndIsDeleted(username, Long.valueOf(0))
                 .orElseThrow(() -> new AppException("Usuario inválido", HttpStatus.NOT_FOUND));
         return userMapper.toUserDTO(user);
     }
