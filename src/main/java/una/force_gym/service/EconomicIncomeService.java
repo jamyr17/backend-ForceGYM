@@ -21,6 +21,10 @@ public class EconomicIncomeService {
         return economicIncomeRepo.getEconomicIncomes(page, size);
     }
 
+    public Long countActiveIncomes(){
+        return economicIncomeRepo.countByIsDeleted(Long.valueOf(0));
+    }
+
     @Transactional
     public int addEconomicIncome(Long pIdUser, LocalDate pRegistrationDate, String pVoucherNumber, String pDetail, Long pIdMeanOfPayment, Float pAmount, Long pIdActivityType, Long pLoggedIdUser){
         return economicIncomeRepo.addEconomicIncome(pIdUser, pRegistrationDate, pVoucherNumber, pDetail, pIdMeanOfPayment, pAmount, pIdActivityType, pLoggedIdUser);
