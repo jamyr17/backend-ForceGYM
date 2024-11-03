@@ -1,6 +1,7 @@
 package una.force_gym.repository;
 
 import java.time.LocalDate;
+import java.util.Optional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.query.Procedure;
@@ -18,5 +19,7 @@ public interface UserRepository extends JpaRepository<User, Long>{
 
     @Procedure(procedureName = "prDeleteUser", outputParameterName = "result")
     int deleteUser(@Param("pIdUser") Long pIdUser, @Param("pLoggedIdUser") Long pLoggedIdUser); 
+
+    Optional<User> findByUsername(String username);
     
 }

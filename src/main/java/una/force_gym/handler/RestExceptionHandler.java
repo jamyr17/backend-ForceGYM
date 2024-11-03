@@ -13,9 +13,10 @@ public class RestExceptionHandler {
 
     @ExceptionHandler(value = { AppException.class })
     @ResponseBody
-    public ResponseEntity<ApiResponse> handleException(AppException ex) {
+    public ResponseEntity<ApiResponse<Object>> handleException(AppException ex) {
         return ResponseEntity
                 .status(ex.getStatus())
-                .body(new ApiResponse((ex.getMessage()), null));
+                .body(new ApiResponse<>(ex.getMessage(), null));
     }
+    
 }

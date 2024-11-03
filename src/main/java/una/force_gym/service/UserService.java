@@ -1,14 +1,21 @@
 package una.force_gym.service;
 
+import java.nio.CharBuffer;
 import java.time.LocalDate;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import una.force_gym.domain.User;
+import una.force_gym.dto.CredentialsDTO;
+import una.force_gym.dto.LoginDTO;
 import una.force_gym.dto.UserDTO;
+import una.force_gym.exception.AppException;
+import una.force_gym.mapper.UserMapper;
 import una.force_gym.repository.UserDTORepository;
 import una.force_gym.repository.UserRepository;
 
@@ -23,6 +30,9 @@ public class UserService {
 
     @Autowired 
     private PasswordEncoder passwordEncoder;
+
+    @Autowired
+    private UserMapper userMapper;
     
     @Transactional
     public List<UserDTO> getUsers(){
@@ -44,6 +54,24 @@ public class UserService {
     @Transactional
     public int deleteUser(Long pIdUser, Long pLoggedIdUser){
         return userRepo.deleteUser(pIdUser, pLoggedIdUser);
+    }
+
+    @Transactional
+    public LoginDTO login(CredentialsDTO credentialsDTO) {
+        User user = userRepo.findByUsername(credentialsDTO.getUsername())
+                .orElseThrow(() -> new AppException("Usuario inválido", HttpStatus.NOT_FOUND));
+
+        if (passwordEncoder.matches(CharBuffer.wrap(credentialsDTO.getPassword()), user.getPassword())) {
+            return userMapper.toLoginDTO(user);
+        }
+        throw new AppException("Credenciales inválidas", HttpStatus.BAD_REQUEST);
+    }
+
+    @Transactional
+    public UserDTO findByUsername(String username) {
+        User user = userRepo.findByUsername(username)
+                .orElseThrow(() -> new AppException("Usuario inválido", HttpStatus.NOT_FOUND));
+        return userMapper.toUserDTO(user);
     }
 
 }
