@@ -38,9 +38,12 @@ public class EconomicExpense {
     @Column(name = "amount")
     private Float amount;
 
+    @Column(name = "isDeleted")
+    private Long isDeleted;
+
     public EconomicExpense (){}
     
-    public EconomicExpense(Long idEconomicExpense, User user, LocalDate registrationDate, String voucherNumber, String detail, MeanOfPayment meanOfPayment, Float amount) {
+    public EconomicExpense(Long idEconomicExpense, User user, LocalDate registrationDate, String voucherNumber, String detail, MeanOfPayment meanOfPayment, Float amount, Long isDeleted) {
         this.idEconomicExpense = idEconomicExpense;
         this.user = user;
         this.registrationDate = registrationDate;
@@ -48,6 +51,7 @@ public class EconomicExpense {
         this.detail = detail;
         this.meanOfPayment = meanOfPayment;
         this.amount = amount;
+        this.isDeleted = isDeleted;
     }
 
     public Long getIdEconomicExpense() {
@@ -104,6 +108,14 @@ public class EconomicExpense {
 
     public void setAmount(Float amount) {
         this.amount = amount;
+    }
+
+    public Long getIsDeleted() {
+        return isDeleted;
+    }
+
+    public void setIsDeleted(Long isDeleted) {
+        this.isDeleted = isDeleted;
     }
 
 }

@@ -1,6 +1,8 @@
 package una.force_gym.controller;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -31,15 +33,21 @@ public class EconomicExpenseController {
     private EconomicExpenseService economicExpenseService;
 
     @GetMapping("/list")
-    public ResponseEntity<ApiResponse<List<EconomicExpense>>> getEconomicExpenses(
+    public ResponseEntity<ApiResponse<Map<String, Object>>> getEconomicExpenses(
             @RequestParam(defaultValue = "1") int page,
             @RequestParam(defaultValue = "10") int size) {
         try {
             List<EconomicExpense> economicExpenses = economicExpenseService.getEconomicExpenses(page, size);
-            ApiResponse<List<EconomicExpense>> response = new ApiResponse<>("Gastos económicos obtenidos correctamente.", economicExpenses);
+            Long totalRecords = economicExpenseService.countActiveExpenses();
+
+            Map<String, Object> responseData = new HashMap<>();
+            responseData.put("economicExpenses", economicExpenses);
+            responseData.put("totalRecords", totalRecords);
+
+            ApiResponse<Map<String, Object>> response = new ApiResponse<>("Gastos económicos obtenidos correctamente.", responseData);
             return new ResponseEntity<>(response, HttpStatus.OK); 
         } catch (RuntimeException e) {
-            ApiResponse<List<EconomicExpense>> response = new ApiResponse<>("Ocurrió un error al solicitar los datos de los gastos económicos.", null);
+            ApiResponse<Map<String, Object>> response = new ApiResponse<>("Ocurrió un error al solicitar los datos de los gastos económicos.", null);
             return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR); 
         }
     }
