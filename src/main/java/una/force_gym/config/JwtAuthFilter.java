@@ -7,6 +7,8 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.filter.OncePerRequestFilter;
 
+import com.auth0.jwt.exceptions.TokenExpiredException;
+
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -28,18 +30,22 @@ public class JwtAuthFilter extends OncePerRequestFilter {
             FilterChain filterChain) throws ServletException, IOException {
         String header = httpServletRequest.getHeader(HttpHeaders.AUTHORIZATION);
 
-        if (header != null) {
-            String[] authElements = header.split(" ");
-
-            if (authElements.length == 2
-                    && "Bearer".equals(authElements[0])) {
-                try {
-                    SecurityContextHolder.getContext().setAuthentication(
-                            userAuthenticationProvider.validateToken(authElements[1]));
-                } catch (RuntimeException e) {
-                    SecurityContextHolder.clearContext();
-                    throw e;
-                }
+        if (header != null && header.startsWith("Bearer ")) {
+            String token = header.substring(7); 
+    
+            try {
+                SecurityContextHolder.getContext().setAuthentication(
+                        userAuthenticationProvider.validateToken(token));
+            } catch (TokenExpiredException e) {
+                SecurityContextHolder.clearContext();
+                logger.warn("El token ha expirado: {}", e); 
+                httpServletResponse.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+                return;
+            } catch (RuntimeException e) {
+                SecurityContextHolder.clearContext();
+                logger.error("Token no válido: {}", e); 
+                httpServletResponse.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+                return;
             }
         }
 
