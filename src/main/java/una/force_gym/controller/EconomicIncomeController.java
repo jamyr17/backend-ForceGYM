@@ -141,4 +141,49 @@ public class EconomicIncomeController {
 
     }
 
+    @GetMapping("/incomesByAmountRange")
+    public ResponseEntity<ApiResponse<Map<String, Object>>> filterEconomicIncomesByAmountRange(
+        @RequestParam("minAmount") double minAmount,
+        @RequestParam("maxAmount") double maxAmount,
+        @RequestParam(defaultValue = "1") int page,
+        @RequestParam(defaultValue = "10") int size) {
+        try {
+            List<EconomicIncome> economicIncomes = economicIncomeService.getEconomicIncomesByAmountRange(minAmount, maxAmount, page, size);
+            Long totalRecords = (long) economicIncomes.size(); 
+
+            Map<String, Object> responseData = new HashMap<>();
+            responseData.put("economicIncomes", economicIncomes);
+            responseData.put("totalRecords", totalRecords);
+
+            ApiResponse<Map<String, Object>> response = new ApiResponse<>("Ingresos económicos filtrados por rango de montos obtenidos correctamente.", responseData);
+            return new ResponseEntity<>(response, HttpStatus.OK); 
+        } catch (RuntimeException e) {
+            ApiResponse<Map<String, Object>> response = new ApiResponse<>("Ocurrió un error al solicitar los datos de los ingresos económicos por rango de montos.", null);
+            return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR); 
+        }
+    }
+
+    @GetMapping("/incomesByDateRange")
+    public ResponseEntity<ApiResponse<Map<String, Object>>> getEconomicIncomesByDateRange(
+        @RequestParam LocalDate startDate,
+        @RequestParam LocalDate endDate,
+        @RequestParam(defaultValue = "1") int page,
+        @RequestParam(defaultValue = "10") int size) {
+        try {
+            List<EconomicIncome> economicIncomes = economicIncomeService.getEconomicIncomesByDateRange(startDate, endDate, page, size);
+            Long totalRecords = (long) economicIncomes.size(); 
+
+            Map<String, Object> responseData = new HashMap<>();
+            responseData.put("economicIncomes", economicIncomes);
+            responseData.put("totalRecords", totalRecords);
+
+            ApiResponse<Map<String, Object>> response = new ApiResponse<>("Ingresos económicos filtrados por rango de fechas obtenidos correctamente.", responseData);
+            return new ResponseEntity<>(response, HttpStatus.OK); 
+        } catch (RuntimeException e) {
+            ApiResponse<Map<String, Object>> response = new ApiResponse<>("Ocurrió un error al solicitar los datos de los ingresos económicos por rango de fechas.", null);
+            return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR); 
+        }
+    }
+
+
 }

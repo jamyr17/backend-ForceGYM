@@ -25,4 +25,9 @@ public interface EconomicExpenseRepository extends JpaRepository<EconomicExpense
     @Procedure(procedureName = "prDeleteEconomicExpense")
     int deleteEconomicExpense(@Param("pIdEconomicExpense") Long pIdEconomicExpense, @Param("pLoggedIdUser") Long pLoggedIdUser);
     
+    @Procedure(procedureName = "prGetEconomicExpenseByAmountRange")
+    List<EconomicExpense> getEconomicExpensesByAmountRange(@Param("minAmount") double minAmount, @Param("maxAmount") double maxAmount, @Param("p_page") int p_page, @Param("p_limit") int p_limit);
+
+    @Procedure(procedureName = "prGetEconomicExpenseByDateRange")
+    List<EconomicExpense> getEconomicExpensesByDateRange(@Param("startDate") LocalDate startDate, @Param("endDate") LocalDate endDate, @Param("p_page") int p_page, @Param("p_limit") int p_limit);
 }

@@ -136,4 +136,48 @@ public class ProductInventoryController {
 
     }
 
+    @GetMapping("/inventoryByCostRange")
+    public ResponseEntity<ApiResponse<Map<String, Object>>> getProductInventoryByCostRange(
+        @RequestParam("minCost") double minCost,
+        @RequestParam("maxCost") double maxCost,
+        @RequestParam(defaultValue = "1") int page,
+        @RequestParam(defaultValue = "10") int size) {
+        try {
+            List<ProductInventory> products = productInventoryService.getProductInventoryByCostRange(minCost, maxCost, page, size);
+            Long totalRecords = (long) products.size();
+
+            Map<String, Object> responseData = new HashMap<>();
+            responseData.put("products", products);
+            responseData.put("totalRecords", totalRecords);
+
+            ApiResponse<Map<String, Object>> response = new ApiResponse<>("Inventario filtrado por rango de costo obtenido correctamente.", responseData);
+            return new ResponseEntity<>(response, HttpStatus.OK);
+        } catch (RuntimeException e) {
+            ApiResponse<Map<String, Object>> response = new ApiResponse<>("Error al obtener inventario por rango de costo.", null);
+            return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @GetMapping("/inventoryByQuantityRange")
+    public ResponseEntity<ApiResponse<Map<String, Object>>> getProductInventoryByQuantityRange(
+        @RequestParam("minQuantity") int minQuantity,
+        @RequestParam("maxQuantity") int maxQuantity,
+        @RequestParam(defaultValue = "1") int page,
+        @RequestParam(defaultValue = "10") int size) {
+        try {
+            List<ProductInventory> products = productInventoryService.getProductInventoryByQuantityRange(minQuantity, maxQuantity, page, size);
+            Long totalRecords = (long) products.size();
+
+            Map<String, Object> responseData = new HashMap<>();
+            responseData.put("products", products);
+            responseData.put("totalRecords", totalRecords);
+
+            ApiResponse<Map<String, Object>> response = new ApiResponse<>("Inventario filtrado por rango de cantidad obtenido correctamente.", responseData);
+            return new ResponseEntity<>(response, HttpStatus.OK);
+        } catch (RuntimeException e) {
+            ApiResponse<Map<String, Object>> response = new ApiResponse<>("Error al obtener inventario por rango de cantidad.", null);
+            return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
 }

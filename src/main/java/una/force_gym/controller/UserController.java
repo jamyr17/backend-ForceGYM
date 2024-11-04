@@ -160,5 +160,28 @@ public class UserController {
         }
 
     }
-    
+
+    @GetMapping("/usersByRole")
+    public ResponseEntity<ApiResponse<Map<String, Object>>> getUsersByRole(
+            @RequestParam("idRole") int idRole,
+            @RequestParam(defaultValue = "1") int page,
+            @RequestParam(defaultValue = "10") int size) {
+        try {
+            List<UserDTO> users = userService.getUsersByRole(idRole, page, size);
+            Long totalRecords = userService.countUsersByRole(idRole);
+
+            Map<String, Object> responseData = new HashMap<>();
+            responseData.put("users", users);
+            responseData.put("totalRecords", totalRecords);
+
+            ApiResponse<Map<String, Object>> response = new ApiResponse<>("Usuarios filtrados por rol obtenidos correctamente.", responseData);
+            return new ResponseEntity<>(response, HttpStatus.OK); 
+
+        } catch (RuntimeException e) {
+            ApiResponse<Map<String, Object>> response = new ApiResponse<>("Ocurrió un error al solicitar los datos de los usuarios por rol", null);
+            return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR); 
+        }
+    }
+
+        
 }

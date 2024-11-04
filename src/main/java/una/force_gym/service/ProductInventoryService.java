@@ -38,5 +38,14 @@ public class ProductInventoryService {
     public int deleteProductInventory(Long pIdProductInventory, Long pLoggedIdUser){
         return productInventoryRepo.deleteProductInventory(pIdProductInventory, pLoggedIdUser);
     }
-    
+
+    @Transactional
+    public List<ProductInventory> getProductInventoryByCostRange(double minCost, double maxCost, int page, int size) {
+        return productInventoryRepo.getProductInventoryByCostRange(minCost, maxCost, page, size);
+    }
+
+    @Transactional
+    public List<ProductInventory> getProductInventoryByQuantityRange(int minQuantity, int maxQuantity, int page, int size) {
+        return productInventoryRepo.getProductInventoryByQuantityRange(minQuantity, maxQuantity, page, size);
+    }
 }

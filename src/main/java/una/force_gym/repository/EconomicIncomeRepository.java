@@ -25,4 +25,11 @@ public interface EconomicIncomeRepository extends JpaRepository<EconomicIncome, 
     @Procedure(procedureName = "prDeleteEconomicIncome")
     int deleteEconomicIncome(@Param("pIdEconomicIncome") Long pIdEconomicIncome, @Param("pLoggedIdUser") Long pLoggedIdUser);
     
+    @Procedure(procedureName = "prGetEconomicIncomeByAmountRange")
+    List<EconomicIncome> getEconomicIncomesByAmountRange(@Param("minAmount") double minAmount, @Param("maxAmount") double maxAmount, @Param("p_page") int p_page, @Param("p_limit") int p_limit);
+
+    @Procedure(procedureName = "prGetEconomicIncomeByDateRange")
+    List<EconomicIncome> getEconomicIncomesByDateRange(@Param("startDate") LocalDate startDate, @Param("endDate") LocalDate endDate, @Param("p_page") int p_page, @Param("p_limit") int p_limit);
+
+
 }

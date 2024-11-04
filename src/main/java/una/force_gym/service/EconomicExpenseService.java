@@ -39,5 +39,15 @@ public class EconomicExpenseService {
     public int deleteEconomicExpense(Long pIdEconomicExpense, Long pLoggedIdUser){
         return economicExpenseRepo.deleteEconomicExpense(pIdEconomicExpense, pLoggedIdUser);
     }
+
+    @Transactional
+    public List<EconomicExpense> getEconomicExpensesByAmountRange(double minAmount, double maxAmount, int page, int size) {
+        return economicIncomeRepo.getEconomicExpensesByAmountRange(minAmount, maxAmount, page, size);
+    }
+
+    @Transactional
+    public List<EconomicExpense> getEconomicExpensesByDateRange(LocalDate startDate, LocalDate endDate, int page, int size) {
+        return economicIncomeRepo.getEconomicExpensesByDateRange(startDate, endDate, page, size);
+    }
     
 }

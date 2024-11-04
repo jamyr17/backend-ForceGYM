@@ -24,4 +24,10 @@ public interface ProductInventoryRepository extends JpaRepository<ProductInvento
     @Procedure(procedureName = "prDeleteProductInventory")
     int deleteProductInventory(@Param("pIdProductInventory") Long pIdProductInventory, @Param("pLoggedIdUser") Long pLoggedIdUser);
 
+    @Procedure(procedureName = "prGetProductInventoryByCostRange")
+    List<ProductInventory> getProductInventoryByCostRange(@Param("minCost") double minCost, @Param("maxCost") double maxCost, @Param("p_page") int p_page, @Param("p_limit") int p_limit);
+
+    @Procedure(procedureName = "prGetProductInventoryByQuantityRange")
+    List<ProductInventory> getProductInventoryByQuantityRange(@Param("minQuantity") int minQuantity, @Param("maxQuantity") int maxQuantity, @Param("p_page") int p_page, @Param("p_limit") int p_limit);
+
 }

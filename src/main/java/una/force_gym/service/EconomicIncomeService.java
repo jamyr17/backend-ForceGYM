@@ -39,5 +39,15 @@ public class EconomicIncomeService {
     public int deleteEconomicIncome(Long pIdEconomicIncome, Long pLoggedIdUser){
         return economicIncomeRepo.deleteEconomicIncome(pIdEconomicIncome, pLoggedIdUser);
     }
-    
+
+    @Transactional
+    public List<EconomicIncome> getEconomicIncomesByAmountRange(double minAmount, double maxAmount, int page, int size) {
+        return economicIncomeRepo.getEconomicIncomesByAmountRange(minAmount, maxAmount, page, size);
+    }
+
+    @Transactional
+    public List<EconomicIncome> getEconomicIncomesByDateRange(LocalDate startDate, LocalDate endDate, int page, int size) {
+        return economicIncomeRepo.getEconomicIncomesByDateRange(startDate, endDate, page, size);
+    }
+
 }

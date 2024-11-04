@@ -15,4 +15,8 @@ public interface UserDTORepository extends JpaRepository<UserDTO, Long>{
     
     Long countByIsDeleted(Long isDeleted);
 
+    @Procedure(procedureName = "prGetUserByRole")
+    List<User> getUsersByRole(@Param("pIdRole") int pIdRole, @Param("p_page") int p_page, @Param("p_limit") int p_limit);
+      
+
 }

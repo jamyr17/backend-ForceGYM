@@ -78,4 +78,10 @@ public class UserService {
         return userMapper.toUserDTO(user);
     }
 
+    @Transactional
+    public List<User> getUsersByRole(int idRole, int page, int size) {
+        return userRepo.getUsersByRole(idRole, page, size);
+    }
+
+
 }
