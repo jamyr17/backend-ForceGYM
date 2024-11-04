@@ -42,12 +42,12 @@ public class EconomicExpenseService {
 
     @Transactional
     public List<EconomicExpense> getEconomicExpensesByAmountRange(double minAmount, double maxAmount, int page, int size) {
-        return economicIncomeRepo.getEconomicExpensesByAmountRange(minAmount, maxAmount, page, size);
+        return economicExpenseRepo.getEconomicExpensesByAmountRange(minAmount, maxAmount, page, size);
     }
 
     @Transactional
     public List<EconomicExpense> getEconomicExpensesByDateRange(LocalDate startDate, LocalDate endDate, int page, int size) {
-        return economicIncomeRepo.getEconomicExpensesByDateRange(startDate, endDate, page, size);
+        return economicExpenseRepo.getEconomicExpensesByDateRange(startDate, endDate, page, size);
     }
     
 }

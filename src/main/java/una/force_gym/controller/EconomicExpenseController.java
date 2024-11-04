@@ -4,6 +4,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import java.time.LocalDate;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -135,7 +137,7 @@ public class EconomicExpenseController {
         @RequestParam(defaultValue = "1") int page,
         @RequestParam(defaultValue = "10") int size) {
         try {
-            List<EconomicExpense> economicExpenses = economicIncomeService.getEconomicExpensesByAmountRange(minAmount, maxAmount, page, size);
+            List<EconomicExpense> economicExpenses = economicExpenseService.getEconomicExpensesByAmountRange(minAmount, maxAmount, page, size);
             Long totalRecords = (long) economicExpenses.size(); 
 
             Map<String, Object> responseData = new HashMap<>();
@@ -157,7 +159,7 @@ public class EconomicExpenseController {
         @RequestParam(defaultValue = "1") int page,
         @RequestParam(defaultValue = "10") int size) {
         try {
-            List<EconomicExpense> economicExpenses = economicIncomeService.getEconomicExpensesByDateRange(startDate, endDate, page, size);
+            List<EconomicExpense> economicExpenses = economicExpenseService.getEconomicExpensesByDateRange(startDate, endDate, page, size);
             Long totalRecords = (long) economicExpenses.size(); 
 
             Map<String, Object> responseData = new HashMap<>();
