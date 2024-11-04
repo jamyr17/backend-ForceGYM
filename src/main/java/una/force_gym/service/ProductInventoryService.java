@@ -48,4 +48,8 @@ public class ProductInventoryService {
     public List<ProductInventory> getProductInventoryByQuantityRange(int minQuantity, int maxQuantity, int page, int size) {
         return productInventoryRepo.getProductInventoryByQuantityRange(minQuantity, maxQuantity, page, size);
     }
+
+    public List<ProductInventory> searchProductsInventory(String searchTerm) {
+        return productInventoryRepo.searchProductsInventory(searchTerm);
+    }
 }

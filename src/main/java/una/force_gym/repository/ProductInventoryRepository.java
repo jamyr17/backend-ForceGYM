@@ -3,6 +3,7 @@ package una.force_gym.repository;
 import java.util.List;
 
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.jpa.repository.query.Procedure;
 import org.springframework.data.repository.query.Param;
 
@@ -30,4 +31,8 @@ public interface ProductInventoryRepository extends JpaRepository<ProductInvento
     @Procedure(procedureName = "prGetProductInventoryByQuantityRange")
     List<ProductInventory> getProductInventoryByQuantityRange(@Param("minQuantity") int minQuantity, @Param("maxQuantity") int maxQuantity, @Param("p_page") int p_page, @Param("p_limit") int p_limit);
 
+    @Query("SELECT p FROM ProductInventory p WHERE p.isDeleted = 0 AND " +
+           "(LOWER(p.name) LIKE LOWER(CONCAT('%', :searchTerm, '%')) " +
+           "OR LOWER(p.code) LIKE LOWER(CONCAT('%', :searchTerm, '%')))")
+    List<ProductInventory> searchProductsInventory(@Param("searchTerm") String searchTerm);
 }
