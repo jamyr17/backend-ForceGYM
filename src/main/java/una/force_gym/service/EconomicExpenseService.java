@@ -50,4 +50,13 @@ public class EconomicExpenseService {
         return economicExpenseRepo.getEconomicExpensesByDateRange(startDate, endDate, page, size);
     }
     
+    @Transactional
+    public List<EconomicExpense> searchEconomicExpenses(String searchTerm, int page, int size) {
+        return economicExpenseRepo.searchEconomicExpenses(searchTerm, page, size);
+    }
+
+    public Long countExpensesBySearchTerm(String searchTerm) {
+        return economicExpenseRepo.countBySearchTerm(searchTerm);
+    }
+
 }

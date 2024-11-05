@@ -4,6 +4,7 @@ import java.time.LocalDate;
 import java.util.List;
 
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.jpa.repository.query.Procedure;
 import org.springframework.data.repository.query.Param;
 
@@ -30,4 +31,15 @@ public interface EconomicExpenseRepository extends JpaRepository<EconomicExpense
 
     @Procedure(procedureName = "prGetEconomicExpenseByDateRange")
     List<EconomicExpense> getEconomicExpensesByDateRange(@Param("startDate") LocalDate startDate, @Param("endDate") LocalDate endDate, @Param("p_page") int p_page, @Param("p_limit") int p_limit);
+
+    @Query(value = "SELECT * FROM tbeconomicexpense e WHERE e.isDeleted = 0 AND " +
+                   "e.voucherNumber LIKE CONCAT('%', :searchTerm, '%') " +
+                   "LIMIT :size OFFSET :offset", nativeQuery = true)
+    List<EconomicExpense> searchEconomicExpenses(@Param("searchTerm") String searchTerm, 
+                                                 @Param("offset") int offset, 
+                                                 @Param("size") int size);
+
+    @Query(value = "SELECT COUNT(*) FROM tbeconomicexpense e WHERE e.isDeleted = 0 AND " +
+                   "e.voucherNumber LIKE CONCAT('%', :searchTerm, '%')", nativeQuery = true)
+    Long countBySearchTerm(@Param("searchTerm") String searchTerm);
 }

@@ -174,5 +174,27 @@ public class EconomicExpenseController {
         }
     }
 
+    @GetMapping("/search")
+public ResponseEntity<ApiResponse<Map<String, Object>>> searchEconomicExpenses(
+        @RequestParam String searchTerm,
+        @RequestParam(defaultValue = "1") int page,
+        @RequestParam(defaultValue = "10") int size) {
+    try {
+        List<EconomicExpense> economicExpenses = economicExpenseService.searchEconomicExpenses(searchTerm, page, size);
+        Long totalRecords = economicExpenseService.countExpensesBySearchTerm(searchTerm);
+
+        Map<String, Object> responseData = new HashMap<>();
+        responseData.put("economicExpenses", economicExpenses);
+        responseData.put("totalRecords", totalRecords);
+
+        ApiResponse<Map<String, Object>> response = new ApiResponse<>("Gastos económicos obtenidos correctamente.", responseData);
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    } catch (RuntimeException e) {
+        ApiResponse<Map<String, Object>> response = new ApiResponse<>("Ocurrió un error al solicitar los datos de los gastos económicos.", null);
+        return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+}
+
+
 
 }
