@@ -32,14 +32,13 @@ public interface EconomicExpenseRepository extends JpaRepository<EconomicExpense
     @Procedure(procedureName = "prGetEconomicExpenseByDateRange")
     List<EconomicExpense> getEconomicExpensesByDateRange(@Param("startDate") LocalDate startDate, @Param("endDate") LocalDate endDate, @Param("p_page") int p_page, @Param("p_limit") int p_limit);
 
-    @Query(value = "SELECT * FROM tbeconomicexpense e WHERE e.isDeleted = 0 AND " +
-                   "e.voucherNumber LIKE CONCAT('%', :searchTerm, '%') " +
-                   "LIMIT :size OFFSET :offset", nativeQuery = true)
-    List<EconomicExpense> searchEconomicExpenses(@Param("searchTerm") String searchTerm, 
-                                                 @Param("offset") int offset, 
-                                                 @Param("size") int size);
+    @Query(value = "SELECT * FROM tbeconomicexpense p WHERE p.isDeleted = 0 AND " +
+               "LOWER(p.vouchernumber) LIKE LOWER(CONCAT('%', :searchTerm, '%')) " +
+               "LIMIT :size OFFSET :offset", nativeQuery = true)
+    List<EconomicExpense> searchEconomicExpenses(@Param("searchTerm") String searchTerm, @Param("offset") int offset, @Param("size") int size);
 
-    @Query(value = "SELECT COUNT(*) FROM tbeconomicexpense e WHERE e.isDeleted = 0 AND " +
-                   "e.voucherNumber LIKE CONCAT('%', :searchTerm, '%')", nativeQuery = true)
+    @Query(value = "SELECT COUNT(*) FROM tbeconomicexpense p WHERE p.isDeleted = 0 AND " +
+                "LOWER(p.vouchernumber) LIKE LOWER(CONCAT('%', :searchTerm, '%'))", nativeQuery = true)
     Long countBySearchTerm(@Param("searchTerm") String searchTerm);
+
 }

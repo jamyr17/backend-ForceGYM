@@ -4,6 +4,7 @@ import java.time.LocalDate;
 import java.util.List;
 
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.jpa.repository.query.Procedure;
 import org.springframework.data.repository.query.Param;
 
@@ -31,5 +32,13 @@ public interface EconomicIncomeRepository extends JpaRepository<EconomicIncome, 
     @Procedure(procedureName = "prGetEconomicIncomeByDateRange")
     List<EconomicIncome> getEconomicIncomesByDateRange(@Param("startDate") LocalDate startDate, @Param("endDate") LocalDate endDate, @Param("p_page") int p_page, @Param("p_limit") int p_limit);
 
+    @Query(value = "SELECT * FROM tbeconomicincome p WHERE p.isDeleted = 0 AND " +
+               "LOWER(p.vouchernumber) LIKE LOWER(CONCAT('%', :searchTerm, '%')) " +
+               "LIMIT :size OFFSET :offset", nativeQuery = true)
+    List<EconomicIncome> searchEconomicIncomes(@Param("searchTerm") String searchTerm, @Param("offset") int offset, @Param("size") int size);
+
+    @Query(value = "SELECT COUNT(*) FROM tbeconomicincome p WHERE p.isDeleted = 0 AND " +
+                "LOWER(p.vouchernumber) LIKE LOWER(CONCAT('%', :searchTerm, '%'))", nativeQuery = true)
+    Long countBySearchTerm(@Param("searchTerm") String searchTerm);
 
 }
