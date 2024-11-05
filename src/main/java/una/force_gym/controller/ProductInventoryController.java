@@ -181,17 +181,27 @@ public class ProductInventoryController {
 
 
     @GetMapping("/search")
-    public ResponseEntity<ApiResponse<List<ProductInventory>>> searchProductsInventory(
-        @RequestParam("searchTerm") String searchTerm) {
+    public ResponseEntity<ApiResponse<Map<String, Object>>> searchProductsInventory(
+        @RequestParam("searchTerm") String searchTerm,
+        @RequestParam(defaultValue = "1") int page,
+        @RequestParam(defaultValue = "10") int size) {
         try {
-            List<ProductInventory> products = productInventoryService.searchProductsInventory(searchTerm);
-            ApiResponse<List<ProductInventory>> response = new ApiResponse<>("Productos encontrados correctamente.", products);
+            List<ProductInventory> products = productInventoryService.searchProductsInventory(searchTerm, page, size);
+            Long totalRecords = productInventoryService.countSearchProductsInventory(searchTerm);
+
+            Map<String, Object> responseData = new HashMap<>();
+            responseData.put("productsInventory", products);
+            responseData.put("totalRecords", totalRecords);
+
+            ApiResponse<Map<String, Object>> response = new ApiResponse<>("Productos encontrados correctamente.", responseData);
             return new ResponseEntity<>(response, HttpStatus.OK);
         } catch (RuntimeException e) {
-            ApiResponse<List<ProductInventory>> response = new ApiResponse<>("Ocurrió un error en la búsqueda.", null);
+            ApiResponse<Map<String, Object>> response = new ApiResponse<>("Ocurrió un error en la búsqueda.", null);
             return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+
+
 
 
 }

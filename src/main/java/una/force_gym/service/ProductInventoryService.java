@@ -2,7 +2,9 @@ package una.force_gym.service;
 
 import java.util.List;
 
+import org.hibernate.query.Page;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -49,8 +51,10 @@ public class ProductInventoryService {
         return productInventoryRepo.getProductInventoryByQuantityRange(minQuantity, maxQuantity, page, size);
     }
 
-    public List<ProductInventory> searchProductsInventory(String searchTerm) {
-        return productInventoryRepo.searchProductsInventory(searchTerm);
+    @Transactional
+    public List<ProductInventory> searchProductsInventory(String searchTerm, int page, int size) {
+        int offset = (page - 1) * size;  // Cálculo manual de offset
+        return productInventoryRepo.searchProductsInventory(searchTerm, offset, size);
     }
 
     public Long countProductInventoryByCostRange(double minCost, double maxCost) {
@@ -60,5 +64,11 @@ public class ProductInventoryService {
     public Long countProductInventoryByQuantityRange(int minQuantity, int maxQuantity) {
         return productInventoryRepo.countProductInventoryByQuantityRange(minQuantity, maxQuantity);
     }
+
+
+    public Long countSearchProductsInventory(String searchTerm) {
+        return productInventoryRepo.countBySearchTerm(searchTerm);
+    }
+
 
 }
