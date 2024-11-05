@@ -57,4 +57,14 @@ public class EconomicExpenseService {
     public Long countEconomicExpensesByAmountRange(double minAmount, double maxAmount) {
         return economicExpenseRepo.countEconomicExpensesByAmountRange(minAmount, maxAmount);
     }
+    @Transactional
+    public List<EconomicExpense> searchEconomicExpenses(String searchTerm, int page, int size) {
+        int offset = (page - 1) * size;  // Cálculo manual de offset
+        return economicExpenseRepo.searchEconomicExpenses(searchTerm, offset, size);
+    }
+
+    public Long countExpensesBySearchTerm(String searchTerm) {
+        return economicExpenseRepo.countBySearchTerm(searchTerm);
+    }
+
 }

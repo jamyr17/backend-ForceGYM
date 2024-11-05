@@ -2,7 +2,6 @@ package una.force_gym.repository;
 
 import java.util.List;
 
-import org.hibernate.query.Page;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.jpa.repository.query.Procedure;
@@ -41,13 +40,14 @@ public interface ProductInventoryRepository extends JpaRepository<ProductInvento
     Long countProductInventoryByQuantityRange(@Param("minQuantity") int minQuantity, @Param("maxQuantity") int maxQuantity);
 
     @Query(value = "SELECT * FROM tbProductInventory p WHERE p.isDeleted = 0 AND " +
-               "p.code LIKE CONCAT('%', :searchTerm, '%') " +
+               "LOWER(p.code) LIKE LOWER(CONCAT('%', :searchTerm, '%')) " +
                "LIMIT :size OFFSET :offset", nativeQuery = true)
     List<ProductInventory> searchProductsInventory(@Param("searchTerm") String searchTerm, @Param("offset") int offset, @Param("size") int size);
 
     @Query(value = "SELECT COUNT(*) FROM tbProductInventory p WHERE p.isDeleted = 0 AND " +
-                "p.code LIKE CONCAT('%', :searchTerm, '%')", nativeQuery = true)
+                "LOWER(p.code) LIKE LOWER(CONCAT('%', :searchTerm, '%'))", nativeQuery = true)
     Long countBySearchTerm(@Param("searchTerm") String searchTerm);
+
 
 
 }

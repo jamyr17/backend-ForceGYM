@@ -168,7 +168,7 @@ public class ProductInventoryController {
             Long totalRecords = productInventoryService.countProductInventoryByQuantityRange(minQuantity, maxQuantity);
 
             Map<String, Object> responseData = new HashMap<>();
-            responseData.put("products", products);
+            responseData.put("productsInventory", products);
             responseData.put("totalRecords", totalRecords);
 
             ApiResponse<Map<String, Object>> response = new ApiResponse<>("Inventario filtrado por rango de cantidad obtenido correctamente.", responseData);

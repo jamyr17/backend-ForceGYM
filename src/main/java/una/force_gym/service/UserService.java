@@ -86,4 +86,15 @@ public class UserService {
     public Long countUsersByRole(int idRole) {
         return userDTORepo.countUsersByRole(idRole);
     }
+
+    @Transactional
+    public List<User> searchUsers(String searchTerm, int page, int size) {
+        int offset = (page - 1) * size;  // Cálculo manual de offset
+        return userRepo.searchUsers(searchTerm, offset, size);
+    }
+
+    public Long countSearchUsers(String searchTerm) {
+        return userRepo.countBySearchTerm(searchTerm);
+    }   
+
 }

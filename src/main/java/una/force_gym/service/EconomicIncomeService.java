@@ -57,4 +57,14 @@ public class EconomicIncomeService {
     public Long countEconomicIncomesByAmountRange(double minAmount, double maxAmount) {
         return economicIncomeRepo.countEconomicIncomesByAmountRange(minAmount, maxAmount);
     }
+    @Transactional
+    public List<EconomicIncome> searchEconomicIncomes(String searchTerm, int page, int size) {
+        int offset = (page - 1) * size;  // Cálculo manual de offset
+        return economicIncomeRepo.searchEconomicIncomes(searchTerm, offset, size);
+    }
+
+    public Long countIncomeBySearchTerm(String searchTerm) {
+        return economicIncomeRepo.countBySearchTerm(searchTerm);
+    }
+
 }

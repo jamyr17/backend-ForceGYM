@@ -4,6 +4,7 @@ import java.time.LocalDate;
 import java.util.List;
 
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.jpa.repository.query.Procedure;
 import org.springframework.data.repository.query.Param;
 
@@ -38,4 +39,14 @@ public interface EconomicExpenseRepository extends JpaRepository<EconomicExpense
     
     @Query("SELECT COUNT(e) FROM EconomicExpense e WHERE e.amount >= :minAmount AND e.amount <= :maxAmount AND e.isDeleted = 0")
     Long countEconomicExpensesByAmountRange(@Param("minAmount") double minAmount, @Param("maxAmount") double maxAmount);
+
+    @Query(value = "SELECT * FROM tbeconomicexpense p WHERE p.isDeleted = 0 AND " +
+               "LOWER(p.vouchernumber) LIKE LOWER(CONCAT('%', :searchTerm, '%')) " +
+               "LIMIT :size OFFSET :offset", nativeQuery = true)
+    List<EconomicExpense> searchEconomicExpenses(@Param("searchTerm") String searchTerm, @Param("offset") int offset, @Param("size") int size);
+
+    @Query(value = "SELECT COUNT(*) FROM tbeconomicexpense p WHERE p.isDeleted = 0 AND " +
+                "LOWER(p.vouchernumber) LIKE LOWER(CONCAT('%', :searchTerm, '%'))", nativeQuery = true)
+    Long countBySearchTerm(@Param("searchTerm") String searchTerm);
+
 }

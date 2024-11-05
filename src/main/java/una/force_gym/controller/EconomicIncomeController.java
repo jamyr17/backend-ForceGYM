@@ -187,5 +187,26 @@ public class EconomicIncomeController {
         }
     }
 
+    @GetMapping("/search")
+    public ResponseEntity<ApiResponse<Map<String, Object>>> searchEconomicIncomes(
+            @RequestParam String searchTerm,
+            @RequestParam(defaultValue = "1") int page,
+            @RequestParam(defaultValue = "10") int size) {
+        try {
+            List<EconomicIncome> economicIncomes = economicIncomeService.searchEconomicIncomes(searchTerm, page, size);
+            Long totalRecords = economicIncomeService.countIncomeBySearchTerm(searchTerm);
+
+            Map<String, Object> responseData = new HashMap<>();
+            responseData.put("economicIncomes", economicIncomes);
+            responseData.put("totalRecords", totalRecords);
+
+            ApiResponse<Map<String, Object>> response = new ApiResponse<>("Ingresos económicos obtenidos correctamente.", responseData);
+            return new ResponseEntity<>(response, HttpStatus.OK);
+        } catch (RuntimeException e) {
+            ApiResponse<Map<String, Object>> response = new ApiResponse<>("Ocurrió un error al solicitar los datos de los ingresos económicos.", null);
+            return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
 
 }
