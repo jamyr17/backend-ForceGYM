@@ -135,7 +135,6 @@ public class ProductInventoryController {
         }
 
     }
-
     @GetMapping("/inventoryByCostRange")
     public ResponseEntity<ApiResponse<Map<String, Object>>> getProductInventoryByCostRange(
         @RequestParam("minCost") double minCost,
@@ -144,7 +143,7 @@ public class ProductInventoryController {
         @RequestParam(defaultValue = "10") int size) {
         try {
             List<ProductInventory> products = productInventoryService.getProductInventoryByCostRange(minCost, maxCost, page, size);
-            Long totalRecords = (long) products.size();
+            Long totalRecords = productInventoryService.countProductInventoryByCostRange(minCost, maxCost);
 
             Map<String, Object> responseData = new HashMap<>();
             responseData.put("products", products);
@@ -166,7 +165,7 @@ public class ProductInventoryController {
         @RequestParam(defaultValue = "10") int size) {
         try {
             List<ProductInventory> products = productInventoryService.getProductInventoryByQuantityRange(minQuantity, maxQuantity, page, size);
-            Long totalRecords = (long) products.size();
+            Long totalRecords = productInventoryService.countProductInventoryByQuantityRange(minQuantity, maxQuantity);
 
             Map<String, Object> responseData = new HashMap<>();
             responseData.put("products", products);
@@ -179,5 +178,6 @@ public class ProductInventoryController {
             return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+
 
 }

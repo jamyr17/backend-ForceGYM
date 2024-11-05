@@ -50,4 +50,11 @@ public class EconomicExpenseService {
         return economicExpenseRepo.getEconomicExpensesByDateRange(startDate, endDate, page, size);
     }
     
+    public Long countEconomicExpensesByDateRange(LocalDate startDate, LocalDate endDate) {
+        return economicExpenseRepo.countEconomicExpensesByDateRange(startDate, endDate);
+    }
+
+    public Long countEconomicExpensesByAmountRange(double minAmount, double maxAmount) {
+        return economicExpenseRepo.countEconomicExpensesByAmountRange(minAmount, maxAmount);
+    }
 }

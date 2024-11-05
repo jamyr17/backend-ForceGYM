@@ -48,4 +48,13 @@ public class ProductInventoryService {
     public List<ProductInventory> getProductInventoryByQuantityRange(int minQuantity, int maxQuantity, int page, int size) {
         return productInventoryRepo.getProductInventoryByQuantityRange(minQuantity, maxQuantity, page, size);
     }
+
+    public Long countProductInventoryByCostRange(double minCost, double maxCost) {
+        return productInventoryRepo.countProductInventoryByCostRange(minCost, maxCost);
+    }
+
+    public Long countProductInventoryByQuantityRange(int minQuantity, int maxQuantity) {
+        return productInventoryRepo.countProductInventoryByQuantityRange(minQuantity, maxQuantity);
+    }
+
 }

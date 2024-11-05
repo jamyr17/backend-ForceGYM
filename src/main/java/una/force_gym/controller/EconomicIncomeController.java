@@ -150,7 +150,7 @@ public class EconomicIncomeController {
         @RequestParam(defaultValue = "10") int size) {
         try {
             List<EconomicIncome> economicIncomes = economicIncomeService.getEconomicIncomesByAmountRange(minAmount, maxAmount, page, size);
-            Long totalRecords = (long) economicIncomes.size(); 
+            Long totalRecords = economicIncomeService.countEconomicIncomesByAmountRange(minAmount, maxAmount);
 
             Map<String, Object> responseData = new HashMap<>();
             responseData.put("economicIncomes", economicIncomes);
@@ -171,8 +171,9 @@ public class EconomicIncomeController {
         @RequestParam(defaultValue = "1") int page,
         @RequestParam(defaultValue = "10") int size) {
         try {
+            
             List<EconomicIncome> economicIncomes = economicIncomeService.getEconomicIncomesByDateRange(startDate, endDate, page, size);
-            Long totalRecords = (long) economicIncomes.size(); 
+            Long totalRecords = economicIncomeService.countEconomicIncomesByDateRange(startDate, endDate);
 
             Map<String, Object> responseData = new HashMap<>();
             responseData.put("economicIncomes", economicIncomes);

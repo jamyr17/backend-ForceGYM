@@ -8,6 +8,8 @@ import org.springframework.data.repository.query.Param;
 
 import una.force_gym.domain.ProductInventory;
 
+import org.springframework.data.jpa.repository.Query;
+
 public interface ProductInventoryRepository extends JpaRepository<ProductInventory, Long>{
     
     @Procedure(procedureName = "prGetProductInventory")
@@ -29,5 +31,11 @@ public interface ProductInventoryRepository extends JpaRepository<ProductInvento
 
     @Procedure(procedureName = "prGetProductInventoryByQuantityRange")
     List<ProductInventory> getProductInventoryByQuantityRange(@Param("minQuantity") int minQuantity, @Param("maxQuantity") int maxQuantity, @Param("p_page") int p_page, @Param("p_limit") int p_limit);
+    
+    @Query("SELECT COUNT(p) FROM ProductInventory p WHERE p.cost >= :minCost AND p.cost <= :maxCost AND p.isDeleted = 0")
+    Long countProductInventoryByCostRange(@Param("minCost") double minCost, @Param("maxCost") double maxCost);
+
+    @Query("SELECT COUNT(p) FROM ProductInventory p WHERE p.quantity >= :minQuantity AND p.quantity <= :maxQuantity AND p.isDeleted = 0")
+    Long countProductInventoryByQuantityRange(@Param("minQuantity") int minQuantity, @Param("maxQuantity") int maxQuantity);
 
 }

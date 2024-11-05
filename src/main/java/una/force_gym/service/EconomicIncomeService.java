@@ -50,4 +50,11 @@ public class EconomicIncomeService {
         return economicIncomeRepo.getEconomicIncomesByDateRange(startDate, endDate, page, size);
     }
 
+    public Long countEconomicIncomesByDateRange(LocalDate startDate, LocalDate endDate) {
+        return economicIncomeRepo.countEconomicIncomesByDateRange(startDate, endDate);
+    }
+
+    public Long countEconomicIncomesByAmountRange(double minAmount, double maxAmount) {
+        return economicIncomeRepo.countEconomicIncomesByAmountRange(minAmount, maxAmount);
+    }
 }
