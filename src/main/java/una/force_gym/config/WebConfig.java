@@ -24,6 +24,7 @@ public class WebConfig implements WebMvcConfigurer {
         CorsConfiguration config = new CorsConfiguration();
         config.setAllowCredentials(true);
         config.addAllowedOrigin("http://localhost:3000");
+        config.addAllowedOrigin("http://localhost:5173");
         config.addAllowedOrigin("http://26.66.98.89:3000");
         config.setAllowedHeaders(Arrays.asList(
                 HttpHeaders.AUTHORIZATION,
@@ -33,7 +34,8 @@ public class WebConfig implements WebMvcConfigurer {
                 HttpMethod.GET.name(),
                 HttpMethod.POST.name(),
                 HttpMethod.PUT.name(),
-                HttpMethod.DELETE.name()));
+                HttpMethod.DELETE.name(),
+                HttpMethod.OPTIONS.name()));
         config.setMaxAge(MAX_AGE);
         source.registerCorsConfiguration("/**", config);
         
