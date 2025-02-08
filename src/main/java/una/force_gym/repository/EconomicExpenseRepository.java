@@ -10,6 +10,8 @@ import org.springframework.data.repository.query.Param;
 
 import una.force_gym.domain.EconomicExpense;
 
+import org.springframework.data.jpa.repository.Query;
+
 public interface EconomicExpenseRepository extends JpaRepository<EconomicExpense, Long>{
 
     @Procedure(procedureName = "prGetEconomicExpense")
@@ -31,6 +33,12 @@ public interface EconomicExpenseRepository extends JpaRepository<EconomicExpense
 
     @Procedure(procedureName = "prGetEconomicExpenseByDateRange")
     List<EconomicExpense> getEconomicExpensesByDateRange(@Param("startDate") LocalDate startDate, @Param("endDate") LocalDate endDate, @Param("p_page") int p_page, @Param("p_limit") int p_limit);
+
+    @Query("SELECT COUNT(e) FROM EconomicExpense e WHERE e.registrationDate >= :startDate AND e.registrationDate <= :endDate AND e.isDeleted = 0")
+    Long countEconomicExpensesByDateRange(@Param("startDate") LocalDate startDate, @Param("endDate") LocalDate endDate);
+    
+    @Query("SELECT COUNT(e) FROM EconomicExpense e WHERE e.amount >= :minAmount AND e.amount <= :maxAmount AND e.isDeleted = 0")
+    Long countEconomicExpensesByAmountRange(@Param("minAmount") double minAmount, @Param("maxAmount") double maxAmount);
 
     @Query(value = "SELECT * FROM tbeconomicexpense p WHERE p.isDeleted = 0 AND " +
                "LOWER(p.vouchernumber) LIKE LOWER(CONCAT('%', :searchTerm, '%')) " +

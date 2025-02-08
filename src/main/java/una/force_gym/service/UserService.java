@@ -77,5 +77,14 @@ public class UserService {
                 .orElseThrow(() -> new AppException("Usuario inválido", HttpStatus.NOT_FOUND));
         return userMapper.toUserDTO(user);
     }
+    
+    @Transactional
+    public List<UserDTO> getUsersByRole(int idRole, int page, int size) {
+        return userDTORepo.getUsersByRole(idRole, page, size);
+    }
+
+    public Long countUsersByRole(int idRole) {
+        return userDTORepo.countUsersByRole(idRole);
+    }
 
 }

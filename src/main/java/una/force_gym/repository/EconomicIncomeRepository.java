@@ -10,6 +10,8 @@ import org.springframework.data.repository.query.Param;
 
 import una.force_gym.domain.EconomicIncome;
 
+import org.springframework.data.jpa.repository.Query;
+
 public interface EconomicIncomeRepository extends JpaRepository<EconomicIncome, Long>{
     
     @Procedure(procedureName = "prGetEconomicIncome")
@@ -31,6 +33,12 @@ public interface EconomicIncomeRepository extends JpaRepository<EconomicIncome, 
 
     @Procedure(procedureName = "prGetEconomicIncomeByDateRange")
     List<EconomicIncome> getEconomicIncomesByDateRange(@Param("startDate") LocalDate startDate, @Param("endDate") LocalDate endDate, @Param("p_page") int p_page, @Param("p_limit") int p_limit);
+    
+    @Query("SELECT COUNT(e) FROM EconomicIncome e WHERE e.registrationDate >= :startDate AND e.registrationDate <= :endDate AND e.isDeleted = 0")
+    Long countEconomicIncomesByDateRange(@Param("startDate") LocalDate startDate, @Param("endDate") LocalDate endDate);
+    
+    @Query("SELECT COUNT(e) FROM EconomicIncome e WHERE e.amount >= :minAmount AND e.amount <= :maxAmount AND e.isDeleted = 0")
+    Long countEconomicIncomesByAmountRange(@Param("minAmount") double minAmount, @Param("maxAmount") double maxAmount);
 
     @Query(value = "SELECT * FROM tbeconomicincome p WHERE p.isDeleted = 0 AND " +
                "LOWER(p.vouchernumber) LIKE LOWER(CONCAT('%', :searchTerm, '%')) " +
