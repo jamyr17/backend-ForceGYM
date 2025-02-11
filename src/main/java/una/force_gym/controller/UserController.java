@@ -1,7 +1,5 @@
 package una.force_gym.controller;
 
-import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,7 +16,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import una.force_gym.dto.ParamLoggedIdUserDTO;
-import una.force_gym.dto.UserDTO;
 import una.force_gym.dto.UserFormDTO;
 import una.force_gym.exception.AppException;
 import una.force_gym.service.UserService;
@@ -42,13 +39,7 @@ public class UserController {
             @RequestParam(defaultValue = "") String filterByStatus,
             @RequestParam(defaultValue = "") String filterByRole)  {
         try {
-            List<UserDTO> users = userService.getUsers(page, size, searchType, searchTerm, orderBy, directionOrderBy, filterByStatus, filterByRole);
-            Long totalRecords = userService.countActiveUsers();
-
-            Map<String, Object> responseData = new HashMap<>();
-            responseData.put("users", users);
-            responseData.put("totalRecords", totalRecords);
-
+            Map<String, Object> responseData = userService.getUsers(page, size, searchType, searchTerm, orderBy, directionOrderBy, filterByStatus, filterByRole);
             ApiResponse<Map<String, Object>> response = new ApiResponse<>("Usuarios obtenidos correctamente.", responseData);
             return new ResponseEntity<>(response, HttpStatus.OK); 
 
@@ -116,6 +107,7 @@ public class UserController {
             userForm.getGender(), 
             userForm.getUsername(), 
             userForm.getPassword(), 
+            userForm.getIsDeleted(),
             userForm.getParamLoggedIdUser()
         );
 
