@@ -35,8 +35,8 @@ public class UserService {
     private UserMapper userMapper;
     
     @Transactional
-    public List<UserDTO> getUsers(int page, int size){
-        return userDTORepo.getUsers(page, size);
+    public List<UserDTO> getUsers(int page, int size, int searchType, String searchTerm, String orderBy, String directionOrderBy, String filterByStatus, String filterByRole){
+        return userDTORepo.getUsers(page, size, searchType, searchTerm, orderBy, directionOrderBy, filterByStatus, filterByRole);
     }
 
     public Long countActiveUsers(){
@@ -44,9 +44,9 @@ public class UserService {
     }
 
     @Transactional
-    public int addUser(Long pIdRole, String pName, String pFirstLastName, String pSecondLastName, LocalDate pBirthday, String pIdentificationNumber, String pPhoneNunber, String pEmail, String pGender, String pUsername, String pPassword, Long pLoggedIdUser){
+    public int addUser(Long pIdRole, String pName, String pFirstLastName, String pSecondLastName, LocalDate pBirthday, String pIdentificationNumber, String pPhoneNumber, String pEmail, String pGender, String pUsername, String pPassword, Long pLoggedIdUser){
         String encodedPassword = (pPassword != null) ? passwordEncoder.encode(pPassword) : null;
-        return userRepo.addUser(pIdRole, pName, pFirstLastName, pSecondLastName, pBirthday, pIdentificationNumber, pPhoneNunber, pEmail, pGender, pUsername, encodedPassword, pLoggedIdUser);
+        return userRepo.addUser(pIdRole, pName, pFirstLastName, pSecondLastName, pBirthday, pIdentificationNumber, pPhoneNumber, pEmail, pGender, pUsername, encodedPassword, pLoggedIdUser);
     }
 
     @Transactional
@@ -77,15 +77,5 @@ public class UserService {
                 .orElseThrow(() -> new AppException("Usuario inválido", HttpStatus.NOT_FOUND));
         return userMapper.toUserDTO(user);
     }
-
-    @Transactional
-    public List<User> searchUsers(String searchTerm, int page, int size) {
-        int offset = (page - 1) * size;  // Cálculo manual de offset
-        return userRepo.searchUsers(searchTerm, offset, size);
-    }
-
-    public Long countSearchUsers(String searchTerm) {
-        return userRepo.countBySearchTerm(searchTerm);
-    }   
 
 }

@@ -17,7 +17,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import una.force_gym.domain.User;
 import una.force_gym.dto.ParamLoggedIdUserDTO;
 import una.force_gym.dto.UserDTO;
 import una.force_gym.dto.UserFormDTO;
@@ -35,9 +34,15 @@ public class UserController {
     @GetMapping("/list")
     public ResponseEntity<ApiResponse<Map<String, Object>>> getUsers( 
             @RequestParam(defaultValue = "1") int page,
-            @RequestParam(defaultValue = "10") int size)  {
+            @RequestParam(defaultValue = "10") int size,
+            @RequestParam(defaultValue = "1") int searchType,
+            @RequestParam(defaultValue = "") String searchTerm,
+            @RequestParam(defaultValue = "") String orderBy,
+            @RequestParam(defaultValue = "") String directionOrderBy,
+            @RequestParam(defaultValue = "") String filterByStatus,
+            @RequestParam(defaultValue = "") String filterByRole)  {
         try {
-            List<UserDTO> users = userService.getUsers(page, size);
+            List<UserDTO> users = userService.getUsers(page, size, searchType, searchTerm, orderBy, directionOrderBy, filterByStatus, filterByRole);
             Long totalRecords = userService.countActiveUsers();
 
             Map<String, Object> responseData = new HashMap<>();
@@ -158,29 +163,6 @@ public class UserController {
             case -1 -> throw new AppException("No se pudo eliminar el usuario debido a que no se encuentra el registro.", HttpStatus.INTERNAL_SERVER_ERROR);
 
             default -> throw new AppException("Usuario no eliminado debido a problemas en la consulta.", HttpStatus.INTERNAL_SERVER_ERROR);
-        }
-
-    }
-
-    @GetMapping("/search")
-    public ResponseEntity<ApiResponse<Map<String, Object>>> searchUsers( 
-        @RequestParam("searchTerm") String searchTerm,
-        @RequestParam(defaultValue = "1") int page,
-        @RequestParam(defaultValue = "10") int size) {
-        try {
-            List<User> users = userService.searchUsers(searchTerm, page, size);
-            Long totalRecords = userService.countSearchUsers(searchTerm);
-
-            Map<String, Object> responseData = new HashMap<>();
-            responseData.put("users", users);
-            responseData.put("totalRecords", totalRecords);
-
-            ApiResponse<Map<String, Object>> response = new ApiResponse<>("Usuarios obtenidos correctamente.", responseData);
-            return new ResponseEntity<>(response, HttpStatus.OK); 
-
-        } catch (RuntimeException e) {
-            ApiResponse<Map<String, Object>> response = new ApiResponse<>("Ocurrió un error al solicitar los datos de los usuarios", null);
-            return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR); 
         }
 
     }
