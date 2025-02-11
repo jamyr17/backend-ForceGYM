@@ -55,6 +55,15 @@ public class ProductInventoryService {
         return productInventoryRepo.searchProductsInventory(searchTerm, offset, size);
     }
 
+    public Long countProductInventoryByCostRange(double minCost, double maxCost) {
+        return productInventoryRepo.countProductInventoryByCostRange(minCost, maxCost);
+    }
+
+    public Long countProductInventoryByQuantityRange(int minQuantity, int maxQuantity) {
+        return productInventoryRepo.countProductInventoryByQuantityRange(minQuantity, maxQuantity);
+    }
+
+
     public Long countSearchProductsInventory(String searchTerm) {
         return productInventoryRepo.countBySearchTerm(searchTerm);
     }

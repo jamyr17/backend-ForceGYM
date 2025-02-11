@@ -50,6 +50,13 @@ public class EconomicIncomeService {
         return economicIncomeRepo.getEconomicIncomesByDateRange(startDate, endDate, page, size);
     }
 
+    public Long countEconomicIncomesByDateRange(LocalDate startDate, LocalDate endDate) {
+        return economicIncomeRepo.countEconomicIncomesByDateRange(startDate, endDate);
+    }
+
+    public Long countEconomicIncomesByAmountRange(double minAmount, double maxAmount) {
+        return economicIncomeRepo.countEconomicIncomesByAmountRange(minAmount, maxAmount);
+    }
     @Transactional
     public List<EconomicIncome> searchEconomicIncomes(String searchTerm, int page, int size) {
         int offset = (page - 1) * size;  // Cálculo manual de offset
