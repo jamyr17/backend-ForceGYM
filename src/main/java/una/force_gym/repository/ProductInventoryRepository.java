@@ -9,8 +9,6 @@ import org.springframework.data.repository.query.Param;
 
 import una.force_gym.domain.ProductInventory;
 
-import org.springframework.data.jpa.repository.Query;
-
 public interface ProductInventoryRepository extends JpaRepository<ProductInventory, Long>{
     
     @Procedure(procedureName = "prGetProductInventory")

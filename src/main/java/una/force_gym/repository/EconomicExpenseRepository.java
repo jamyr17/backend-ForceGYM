@@ -10,8 +10,6 @@ import org.springframework.data.repository.query.Param;
 
 import una.force_gym.domain.EconomicExpense;
 
-import org.springframework.data.jpa.repository.Query;
-
 public interface EconomicExpenseRepository extends JpaRepository<EconomicExpense, Long>{
 
     @Procedure(procedureName = "prGetEconomicExpense")
