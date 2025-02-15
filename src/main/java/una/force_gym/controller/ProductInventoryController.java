@@ -1,7 +1,5 @@
 package una.force_gym.controller;
 
-import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,7 +15,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import una.force_gym.domain.ProductInventory;
 import una.force_gym.dto.ParamLoggedIdUserDTO;
 import una.force_gym.dto.ProductInventoryDTO;
 import una.force_gym.exception.AppException;
@@ -32,26 +29,29 @@ public class ProductInventoryController {
     private ProductInventoryService productInventoryService;
 
     @GetMapping("/list")
-    public ResponseEntity<ApiResponse<Map<String, Object>>> getProductInventorys(
-        @RequestParam(defaultValue = "1") int page,
-        @RequestParam(defaultValue = "10") int size) {
+    public ResponseEntity<ApiResponse<Map<String, Object>>> getProductosInventory( 
+            @RequestParam(defaultValue = "1") int page,
+            @RequestParam(defaultValue = "10") int size,
+            @RequestParam(defaultValue = "1") int searchType,
+            @RequestParam(defaultValue = "") String searchTerm,
+            @RequestParam(defaultValue = "") String orderBy,
+            @RequestParam(defaultValue = "") String directionOrderBy,
+            @RequestParam(defaultValue = "") String filterByStatus,
+            @RequestParam(defaultValue = "") String filterByCostRange,
+            @RequestParam(defaultValue = "") String filterByQuantityRange
+            )  {
         try {
-            List<ProductInventory> productsInventory = productInventoryService.getProductsInventory(page, size);
-            Long totalRecords = productInventoryService.countActiveProductsInventory();
-
-            Map<String, Object> responseData = new HashMap<>();
-            responseData.put("productsInventory", productsInventory);
-            responseData.put("totalRecords", totalRecords);
-
-            ApiResponse<Map<String, Object>> response = new ApiResponse<>("Productos de inventario obtenidos correctamente.", responseData);
+            Map<String, Object> responseData = productInventoryService.getProductsInventory(page, size, searchType, searchTerm, orderBy, directionOrderBy, filterByStatus, filterByCostRange, filterByQuantityRange);
+            ApiResponse<Map<String, Object>> response = new ApiResponse<>("Productos obtenidos correctamente.", responseData);
             return new ResponseEntity<>(response, HttpStatus.OK); 
 
         } catch (RuntimeException e) {
-            ApiResponse<Map<String, Object>> response = new ApiResponse<>("Ocurrió un error al solicitar los datos de los productos de inventario.", null);
+            ApiResponse<Map<String, Object>> response = new ApiResponse<>("Ocurrió un error al solicitar los datos de los productos", null);
             return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR); 
         }
+
     }
-    
+
     @PostMapping("/add")
     public ResponseEntity<ApiResponse<String>> addProductInventory(@RequestBody ProductInventoryDTO productInventoryDTO) {
         int result = productInventoryService.addProductInventory(
@@ -135,73 +135,4 @@ public class ProductInventoryController {
         }
 
     }
-    @GetMapping("/inventoryByCostRange")
-    public ResponseEntity<ApiResponse<Map<String, Object>>> getProductInventoryByCostRange(
-        @RequestParam("minCost") double minCost,
-        @RequestParam("maxCost") double maxCost,
-        @RequestParam(defaultValue = "1") int page,
-        @RequestParam(defaultValue = "10") int size) {
-        try {
-            List<ProductInventory> products = productInventoryService.getProductInventoryByCostRange(minCost, maxCost, page, size);
-            Long totalRecords = productInventoryService.countProductInventoryByCostRange(minCost, maxCost);
-
-            Map<String, Object> responseData = new HashMap<>();
-            responseData.put("products", products);
-            responseData.put("totalRecords", totalRecords);
-
-            ApiResponse<Map<String, Object>> response = new ApiResponse<>("Inventario filtrado por rango de costo obtenido correctamente.", responseData);
-            return new ResponseEntity<>(response, HttpStatus.OK);
-        } catch (RuntimeException e) {
-            ApiResponse<Map<String, Object>> response = new ApiResponse<>("Error al obtener inventario por rango de costo.", null);
-            return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
-        }
-    }
-
-    @GetMapping("/inventoryByQuantityRange")
-    public ResponseEntity<ApiResponse<Map<String, Object>>> getProductInventoryByQuantityRange(
-        @RequestParam("minQuantity") int minQuantity,
-        @RequestParam("maxQuantity") int maxQuantity,
-        @RequestParam(defaultValue = "1") int page,
-        @RequestParam(defaultValue = "10") int size) {
-        try {
-            List<ProductInventory> products = productInventoryService.getProductInventoryByQuantityRange(minQuantity, maxQuantity, page, size);
-            Long totalRecords = productInventoryService.countProductInventoryByQuantityRange(minQuantity, maxQuantity);
-
-            Map<String, Object> responseData = new HashMap<>();
-            responseData.put("productsInventory", products);
-            responseData.put("totalRecords", totalRecords);
-
-            ApiResponse<Map<String, Object>> response = new ApiResponse<>("Inventario filtrado por rango de cantidad obtenido correctamente.", responseData);
-            return new ResponseEntity<>(response, HttpStatus.OK);
-        } catch (RuntimeException e) {
-            ApiResponse<Map<String, Object>> response = new ApiResponse<>("Error al obtener inventario por rango de cantidad.", null);
-            return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
-        }
-    }
-
-
-    @GetMapping("/search")
-    public ResponseEntity<ApiResponse<Map<String, Object>>> searchProductsInventory(
-        @RequestParam("searchTerm") String searchTerm,
-        @RequestParam(defaultValue = "1") int page,
-        @RequestParam(defaultValue = "10") int size) {
-        try {
-            List<ProductInventory> products = productInventoryService.searchProductsInventory(searchTerm, page, size);
-            Long totalRecords = productInventoryService.countSearchProductsInventory(searchTerm);
-
-            Map<String, Object> responseData = new HashMap<>();
-            responseData.put("productsInventory", products);
-            responseData.put("totalRecords", totalRecords);
-
-            ApiResponse<Map<String, Object>> response = new ApiResponse<>("Productos encontrados correctamente.", responseData);
-            return new ResponseEntity<>(response, HttpStatus.OK);
-        } catch (RuntimeException e) {
-            ApiResponse<Map<String, Object>> response = new ApiResponse<>("Ocurrió un error en la búsqueda.", null);
-            return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
-        }
-    }
-
-
-
-
 }
