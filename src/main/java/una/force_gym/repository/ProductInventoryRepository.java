@@ -8,8 +8,6 @@ import una.force_gym.domain.ProductInventory;
 
 public interface ProductInventoryRepository extends JpaRepository<ProductInventory, Long>{
 
-    Long countByIsDeleted(Long isDeleted);
-
     @Procedure(procedureName = "prInsertProductInventory", outputParameterName = "result")
     int addProductInventory(@Param("pIdUser") Long pIdUser, @Param("pCode") String pCode, @Param("pName") String pName, @Param("pQuantity") int pQuantity, @Param("pCost") Float pCost, @Param("pLoggedIdUser") Long pLoggedIdUser);
 

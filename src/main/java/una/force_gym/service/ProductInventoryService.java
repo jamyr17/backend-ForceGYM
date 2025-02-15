@@ -32,8 +32,10 @@ public class ProductInventoryService {
         String orderBy, 
         String directionOrderBy, 
         String filterByStatus,
-        String filterByCostRange,
-        String filterByQuantityRange
+        String filterByCostRangeMax,
+        String filterByCostRangeMin,
+        String filterByQuantityRangeMax,
+        String filterByQuantityRangeMin
     ) {
             
         StoredProcedureQuery query = entityManager.createStoredProcedureQuery("prGetProductInventory", ProductInventoryDTO.class);
@@ -46,8 +48,10 @@ public class ProductInventoryService {
         query.registerStoredProcedureParameter("p_orderBy", String.class, ParameterMode.IN);
         query.registerStoredProcedureParameter("p_directionOrderBy", String.class, ParameterMode.IN);
         query.registerStoredProcedureParameter("p_filterByStatus", String.class, ParameterMode.IN);
-        query.registerStoredProcedureParameter("p_filterByCostRange", String.class, ParameterMode.IN);
-        query.registerStoredProcedureParameter("p_filterByQuantityRange", String.class, ParameterMode.IN);
+        query.registerStoredProcedureParameter("p_filterByCostRangeMax", String.class, ParameterMode.IN);
+        query.registerStoredProcedureParameter("p_filterByCostRangeMin", String.class, ParameterMode.IN);
+        query.registerStoredProcedureParameter("p_filterByQuantityRangeMax", String.class, ParameterMode.IN);
+        query.registerStoredProcedureParameter("p_filterByQuantityRangeMin", String.class, ParameterMode.IN);
 
         // Parámetro de salida
         query.registerStoredProcedureParameter("p_totalRecords", Integer.class, ParameterMode.OUT);
@@ -60,8 +64,10 @@ public class ProductInventoryService {
         query.setParameter("p_orderBy", orderBy);
         query.setParameter("p_directionOrderBy", directionOrderBy);
         query.setParameter("p_filterByStatus", filterByStatus);
-        query.setParameter("p_filterByCostRange", filterByCostRange);
-        query.setParameter("p_filterByQuantityRange", filterByQuantityRange);
+        query.setParameter("p_filterByCostRangeMax", filterByCostRangeMax);
+        query.setParameter("p_filterByCostRangeMin", filterByCostRangeMin);
+        query.setParameter("p_filterByQuantityRangeMax", filterByQuantityRangeMax);
+        query.setParameter("p_filterByQuantityRangeMin", filterByQuantityRangeMin);
 
         // Ejecutar procedimiento
         query.execute();
@@ -76,10 +82,6 @@ public class ProductInventoryService {
         responseData.put("totalRecords", totalRecords);
         
         return responseData;
-    }
-
-    public Long countActiveProductsInventory(){
-        return productInventoryRepo.countByIsDeleted(Long.valueOf(0));
     }
 
     @Transactional

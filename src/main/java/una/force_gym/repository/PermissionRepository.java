@@ -10,11 +10,6 @@ import una.force_gym.domain.Permission;
 
 public interface PermissionRepository extends JpaRepository<Permission, Long> {
     
-    @Procedure(procedureName = "prGetPermission")
-    List<Permission> getPermissions(@Param("p_page") int p_page, @Param("p_limit") int p_limit); 
-
-    Long countByIsDeleted(Long isDeleted);
-
     @Procedure(procedureName = "prInsertPermission", outputParameterName = "result")
     int addPermission(  @Param("pDefinition") String pDefinition, 
                         @Param("pDescription") String pDescription, 

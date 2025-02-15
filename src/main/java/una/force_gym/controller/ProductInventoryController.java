@@ -37,11 +37,13 @@ public class ProductInventoryController {
             @RequestParam(defaultValue = "") String orderBy,
             @RequestParam(defaultValue = "") String directionOrderBy,
             @RequestParam(defaultValue = "") String filterByStatus,
-            @RequestParam(defaultValue = "") String filterByCostRange,
-            @RequestParam(defaultValue = "") String filterByQuantityRange
+            @RequestParam(defaultValue = "") String filterByCostRangeMax,
+            @RequestParam(defaultValue = "") String filterByCostRangeMin,
+            @RequestParam(defaultValue = "") String filterByQuantityRangeMax,
+            @RequestParam(defaultValue = "") String filterByQuantityRangeMin
             )  {
         try {
-            Map<String, Object> responseData = productInventoryService.getProductsInventory(page, size, searchType, searchTerm, orderBy, directionOrderBy, filterByStatus, filterByCostRange, filterByQuantityRange);
+            Map<String, Object> responseData = productInventoryService.getProductsInventory(page, size, searchType, searchTerm, orderBy, directionOrderBy, filterByStatus, filterByCostRangeMax, filterByCostRangeMin, filterByQuantityRangeMax, filterByQuantityRangeMin);
             ApiResponse<Map<String, Object>> response = new ApiResponse<>("Productos obtenidos correctamente.", responseData);
             return new ResponseEntity<>(response, HttpStatus.OK); 
 

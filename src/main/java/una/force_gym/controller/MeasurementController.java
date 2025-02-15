@@ -32,25 +32,29 @@ public class MeasurementController {
     @Autowired
     private MeasurementService measurementService;
 
+
     @GetMapping("/list")
-    public ResponseEntity<ApiResponse<Map<String, Object>>> getMeasurements(
+    public ResponseEntity<ApiResponse<Map<String, Object>>> getMeasurements( 
             @RequestParam(defaultValue = "1") int page,
-            @RequestParam(defaultValue = "10") int size) {
+            @RequestParam(defaultValue = "10") int size,
+            @RequestParam(defaultValue = "1") int searchType,
+            @RequestParam(defaultValue = "") String searchTerm,
+            @RequestParam(defaultValue = "") String orderBy,
+            @RequestParam(defaultValue = "") String directionOrderBy,
+            @RequestParam(defaultValue = "") String filterByStatus
+            )  {
         try {
-            List<Measurement> Measurements = measurementService.getMeasurements(page, size);
-            Long totalRecords = measurementService.countActiveMeasurements();
-
-            Map<String, Object> responseData = new HashMap<>();
-            responseData.put("Measurements", Measurements);
-            responseData.put("totalRecords", totalRecords);
-
-            ApiResponse<Map<String, Object>> response = new ApiResponse<>("Medidas obtenidos correctamente.", responseData);
+            Map<String, Object> responseData = measurementService.getMeasurements(page, size, searchType, searchTerm, orderBy, directionOrderBy, filterByStatus);
+            ApiResponse<Map<String, Object>> response = new ApiResponse<>("Medidas obtenidas correctamente.", responseData);
             return new ResponseEntity<>(response, HttpStatus.OK); 
+
         } catch (RuntimeException e) {
             ApiResponse<Map<String, Object>> response = new ApiResponse<>("Ocurrió un error al solicitar los datos de las medidas.", null);
             return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR); 
         }
+
     }
+    
 
     @PostMapping("/add")
     public ResponseEntity<ApiResponse<String>> addMeasurement(@RequestBody MeasurementDTO measurementDTO) {

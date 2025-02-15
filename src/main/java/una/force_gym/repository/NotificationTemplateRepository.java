@@ -10,11 +10,6 @@ import una.force_gym.domain.NotificationTemplate;
 
 public interface NotificationTemplateRepository extends JpaRepository<NotificationTemplate, Long> {
     
-    @Procedure(procedureName = "prGetNotificationTemplate")
-    List<NotificationTemplate> getNotificationTemplates(@Param("p_page") int p_page, @Param("p_limit") int p_limit); 
-
-    Long countByIsDeleted(Long isDeleted);
-
     @Procedure(procedureName = "prInsertNotificationTemplate", outputParameterName = "result")
     int addNotificationTemplate(@Param("pIdNotificationType") Long pIdNotificationType, 
                                 @Param("pIdUser") Long pIdUser, 

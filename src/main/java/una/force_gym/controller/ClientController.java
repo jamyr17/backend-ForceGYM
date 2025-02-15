@@ -17,7 +17,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import una.force_gym.domain.Client;
 import una.force_gym.dto.ClientDTO;
 import una.force_gym.dto.ParamLoggedIdUserDTO;
 import una.force_gym.exception.AppException;
@@ -32,24 +31,25 @@ public class ClientController {
     private ClientService clientService;
 
     @GetMapping("/list")
-    public ResponseEntity<ApiResponse<Map<String, Object>>> getClients(
-        @RequestParam(defaultValue = "1") int page,
-        @RequestParam(defaultValue = "10") int size) {
+    public ResponseEntity<ApiResponse<Map<String, Object>>> getClients( 
+            @RequestParam(defaultValue = "1") int page,
+            @RequestParam(defaultValue = "10") int size,
+            @RequestParam(defaultValue = "1") int searchType,
+            @RequestParam(defaultValue = "") String searchTerm,
+            @RequestParam(defaultValue = "") String orderBy,
+            @RequestParam(defaultValue = "") String directionOrderBy,
+            @RequestParam(defaultValue = "") String filterByStatus
+            )  {
         try {
-            List<Client> clients = clientService.getClients(page, size);
-            Long totalRecords = clientService.countActiveClients();
-
-            Map<String, Object> responseData = new HashMap<>();
-            responseData.put("clients", clients);
-            responseData.put("totalRecords", totalRecords);
-
+            Map<String, Object> responseData = clientService.getClients(page, size, searchType, searchTerm, orderBy, directionOrderBy, filterByStatus);
             ApiResponse<Map<String, Object>> response = new ApiResponse<>("Clientes obtenidos correctamente.", responseData);
-            return new ResponseEntity<>(response, HttpStatus.OK);
+            return new ResponseEntity<>(response, HttpStatus.OK); 
 
         } catch (RuntimeException e) {
             ApiResponse<Map<String, Object>> response = new ApiResponse<>("Ocurrió un error al solicitar los datos de los clientes.", null);
-            return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
+            return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR); 
         }
+
     }
     
     @PostMapping("/add")

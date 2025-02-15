@@ -11,11 +11,6 @@ import java.util.List;
 
 public interface MeasurementRepository extends JpaRepository<Measurement, Long> {
    
-    @Procedure(procedureName = "prGetMeasurement")
-    List<Measurement> getMeasurements(@Param("p_page") int p_page, @Param("p_limit") int p_limit);
-
-    Long countByIsDeleted(Long isDeleted);
-
     @Procedure(procedureName = "prInsertMeasurement", outputParameterName = "result")
     int addMeasurement(
         @Param("pIdClient") Long pidClient,

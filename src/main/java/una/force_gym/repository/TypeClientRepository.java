@@ -10,11 +10,6 @@ import java.util.List;
 
 public interface TypeClientRepository extends JpaRepository<TypeClient, Long> {
 
-    @Procedure(procedureName = "prGetTypeClients")
-    List<TypeClient> getTypeClients(@Param("p_page") int p_page, @Param("p_limit") int p_limit);
-
-    Long countByIsDeleted(Long isDeleted);
-
     @Procedure(procedureName = "prInsertTypeClient", outputParameterName = "result")
     int addTypeClient(
         @Param("pTypeName") String pTypeName, 

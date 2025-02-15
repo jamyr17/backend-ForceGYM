@@ -8,11 +8,6 @@ import java.util.List;
 
 public interface HealthQuestionnaireRepository extends JpaRepository<HealthQuestionnaire, Long> {
 
-    @Procedure(procedureName = "prGetHealthQuestionnaire")
-    List<HealthQuestionnaire> getHealthQuestionnaires(@Param("p_page") int p_page, @Param("p_limit") int p_limit);
-
-    Long countByIsDeleted(Long isDeleted);
-
     @Procedure(procedureName = "prInsertHealthQuestionnaire", outputParameterName = "result")
     int addHealthQuestionnaire(
         @Param("pIdClient") Long pIdClient,

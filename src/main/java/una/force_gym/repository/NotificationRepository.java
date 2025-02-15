@@ -11,11 +11,6 @@ import una.force_gym.domain.Notification;
 
 public interface NotificationRepository extends JpaRepository<Notification, Long> {
     
-    @Procedure(procedureName = "prGetNotification")
-    List<Notification> getNotifications(@Param("p_page") int p_page, @Param("p_limit") int p_limit);
-
-    Long countByIsDeleted(Long isDeleted);
-
     @Procedure(procedureName = "prInsertNotification", outputParameterName = "result")
     int addNotification(
         @Param("pIdUser") Long pIdUser,

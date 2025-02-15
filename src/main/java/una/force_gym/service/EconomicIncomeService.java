@@ -32,8 +32,10 @@ public class EconomicIncomeService {
         String orderBy, 
         String directionOrderBy, 
         String filterByStatus,
-        String filterByAmountRange,
-        String filterByDateRange
+        String filterByAmountRangeMax,
+        String filterByAmountRangeMin,
+        String filterByDateRangeStart,
+        String filterByDateRangeEnd
     ) {
             
         StoredProcedureQuery query = entityManager.createStoredProcedureQuery("prGetEconomicIncome", EconomicIncomeDTO.class);
@@ -46,8 +48,10 @@ public class EconomicIncomeService {
         query.registerStoredProcedureParameter("p_orderBy", String.class, ParameterMode.IN);
         query.registerStoredProcedureParameter("p_directionOrderBy", String.class, ParameterMode.IN);
         query.registerStoredProcedureParameter("p_filterByStatus", String.class, ParameterMode.IN);
-        query.registerStoredProcedureParameter("p_filterByAmountRange", String.class, ParameterMode.IN);
-        query.registerStoredProcedureParameter("p_filterByDateRange", String.class, ParameterMode.IN);
+        query.registerStoredProcedureParameter("p_filterByAmountRangeMax", String.class, ParameterMode.IN);
+        query.registerStoredProcedureParameter("p_filterByAmountRangeMin", String.class, ParameterMode.IN);
+        query.registerStoredProcedureParameter("p_filterByDateRangeStart", String.class, ParameterMode.IN);
+        query.registerStoredProcedureParameter("p_filterByDateRangeEnd", String.class, ParameterMode.IN);
 
         // Parámetro de salida
         query.registerStoredProcedureParameter("p_totalRecords", Integer.class, ParameterMode.OUT);
@@ -60,8 +64,10 @@ public class EconomicIncomeService {
         query.setParameter("p_orderBy", orderBy);
         query.setParameter("p_directionOrderBy", directionOrderBy);
         query.setParameter("p_filterByStatus", filterByStatus);
-        query.setParameter("p_filterByAmountRange", filterByAmountRange);
-        query.setParameter("p_filterByDateRange", filterByDateRange);
+        query.setParameter("p_filterByAmountRangeMax", filterByAmountRangeMax);
+        query.setParameter("p_filterByAmountRangeMin", filterByAmountRangeMin);
+        query.setParameter("p_filterByDateRangeStart", filterByDateRangeStart);
+        query.setParameter("p_filterByDateRangeEnd", filterByDateRangeEnd);
 
         // Ejecutar procedimiento
         query.execute();
@@ -76,10 +82,6 @@ public class EconomicIncomeService {
         responseData.put("totalRecords", totalRecords);
         
         return responseData;
-    }
-
-    public Long countActiveIncomes(){
-        return economicIncomeRepo.countByIsDeleted(Long.valueOf(0));
     }
 
     @Transactional

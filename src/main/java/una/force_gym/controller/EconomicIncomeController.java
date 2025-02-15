@@ -29,7 +29,7 @@ public class EconomicIncomeController {
     private EconomicIncomeService economicIncomeService;
 
     @GetMapping("/list")
-    public ResponseEntity<ApiResponse<Map<String, Object>>> getProductosInventory( 
+    public ResponseEntity<ApiResponse<Map<String, Object>>> getEconomicIncomes( 
             @RequestParam(defaultValue = "1") int page,
             @RequestParam(defaultValue = "10") int size,
             @RequestParam(defaultValue = "1") int searchType,
@@ -37,21 +37,22 @@ public class EconomicIncomeController {
             @RequestParam(defaultValue = "") String orderBy,
             @RequestParam(defaultValue = "") String directionOrderBy,
             @RequestParam(defaultValue = "") String filterByStatus,
-            @RequestParam(defaultValue = "") String filterByAmountRange,
-            @RequestParam(defaultValue = "") String filterByDateRange
+            @RequestParam(defaultValue = "") String filterByAmountRangeMax,
+            @RequestParam(defaultValue = "") String filterByAmountRangeMin,
+            @RequestParam(defaultValue = "") String filterByDateRangeMax,
+            @RequestParam(defaultValue = "") String filterByDateRangeMin
             )  {
         try {
-            Map<String, Object> responseData = economicIncomeService.getEconomicIncomes(page, size, searchType, searchTerm, orderBy, directionOrderBy, filterByStatus, filterByAmountRange, filterByDateRange);
+            Map<String, Object> responseData = economicIncomeService.getEconomicIncomes(page, size, searchType, searchTerm, orderBy, directionOrderBy, filterByStatus, filterByAmountRangeMax, filterByAmountRangeMin, filterByDateRangeMax, filterByDateRangeMin);
             ApiResponse<Map<String, Object>> response = new ApiResponse<>("Ingresos económicos obtenidos correctamente.", responseData);
             return new ResponseEntity<>(response, HttpStatus.OK); 
 
         } catch (RuntimeException e) {
-            ApiResponse<Map<String, Object>> response = new ApiResponse<>("Ocurrió un error al solicitar los datos de los productos", null);
+            ApiResponse<Map<String, Object>> response = new ApiResponse<>("Ocurrió un error al solicitar los datos de los ingresos económicos.", null);
             return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR); 
         }
 
-    }
-    
+    } 
     
     @PostMapping("/add")
     public ResponseEntity<ApiResponse<String>> addEconomicIncome(@RequestBody EconomicIncomeDTO economicIncomeDTO) {

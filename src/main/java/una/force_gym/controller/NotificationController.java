@@ -32,24 +32,25 @@ public class NotificationController {
     private NotificationService notificationService;
 
     @GetMapping("/list")
-    public ResponseEntity<ApiResponse<Map<String, Object>>> getNotifications(
-        @RequestParam(defaultValue = "1") int page,
-        @RequestParam(defaultValue = "10") int size) {
+    public ResponseEntity<ApiResponse<Map<String, Object>>> getNotifications( 
+            @RequestParam(defaultValue = "1") int page,
+            @RequestParam(defaultValue = "10") int size,
+            @RequestParam(defaultValue = "1") int searchType,
+            @RequestParam(defaultValue = "") String searchTerm,
+            @RequestParam(defaultValue = "") String orderBy,
+            @RequestParam(defaultValue = "") String directionOrderBy,
+            @RequestParam(defaultValue = "") String filterByStatus
+            )  {
         try {
-            List<Notification> Notifications = notificationService.getNotifications(page, size);
-            Long totalRecords = notificationService.countActiveNotifications();
-
-            Map<String, Object> responseData = new HashMap<>();
-            responseData.put("Notifications", Notifications);
-            responseData.put("totalRecords", totalRecords);
-
-            ApiResponse<Map<String, Object>> response = new ApiResponse<>("Tipos de notificación obtenidos correctamente.", responseData);
+            Map<String, Object> responseData = notificationService.getProductsInventory(page, size, searchType, searchTerm, orderBy, directionOrderBy, filterByStatus);
+            ApiResponse<Map<String, Object>> response = new ApiResponse<>("Notificaciones obtenidas correctamente.", responseData);
             return new ResponseEntity<>(response, HttpStatus.OK); 
 
         } catch (RuntimeException e) {
-            ApiResponse<Map<String, Object>> response = new ApiResponse<>("Ocurrió un error al solicitar los datos de los ingresos económicos.", null);
+            ApiResponse<Map<String, Object>> response = new ApiResponse<>("Ocurrió un error al solicitar los datos de las notificaciones.", null);
             return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR); 
         }
+
     }
     
     @PostMapping("/add")
@@ -64,17 +65,17 @@ public class NotificationController {
         switch(result) {
             case 1 -> 
             { 
-                ApiResponse<String> response = new ApiResponse<>("Tipo notificacion agregado correctamente.", null);
+                ApiResponse<String> response = new ApiResponse<>("Notificacion agregado correctamente.", null);
                 return new ResponseEntity<>(response, HttpStatus.OK); 
             }
 
             // error de MySQL
-            case 0 -> throw new AppException("Ocurrió un error al agregar el nuevo tipo notificacion.", HttpStatus.INTERNAL_SERVER_ERROR);
+            case 0 -> throw new AppException("Ocurrió un error al agregar la nuevo notificacion.", HttpStatus.INTERNAL_SERVER_ERROR);
             
             // no se encuentra el idUser
-            case -1 -> throw new AppException("No se pudo agregar el nuevo tipo notificacion debido a que el usuario asociado no está registrado.", HttpStatus.INTERNAL_SERVER_ERROR);
+            case -1 -> throw new AppException("No se pudo agregar la nueva notificacion debido a que el usuario asociado no está registrado.", HttpStatus.INTERNAL_SERVER_ERROR);
             
-            default -> throw new AppException("Tipo notificacion no agregado debido a problemas en la consulta.", HttpStatus.INTERNAL_SERVER_ERROR);
+            default -> throw new AppException("Notificacion no agregada debido a problemas en la consulta.", HttpStatus.INTERNAL_SERVER_ERROR);
         }
 
     }
@@ -92,20 +93,20 @@ public class NotificationController {
         switch(result) {
             case 1 -> 
             { 
-                ApiResponse<String> response = new ApiResponse<>("Tipo notificacion actualizado correctamente.", null);
+                ApiResponse<String> response = new ApiResponse<>("Notificacion actualizado correctamente.", null);
                 return new ResponseEntity<>(response, HttpStatus.OK); 
             }
 
             // error de MySQL
-            case 0 -> throw new AppException("Ocurrió un error al actualizar el tipo notificacion.", HttpStatus.INTERNAL_SERVER_ERROR);
+            case 0 -> throw new AppException("Ocurrió un error al actualizar el notificacion.", HttpStatus.INTERNAL_SERVER_ERROR);
 
             // no se encuentra el idNotification
-            case -1 -> throw new AppException("No se pudo actualizar el tipo notificacion debido a que no se encuentra el registro.", HttpStatus.INTERNAL_SERVER_ERROR);
+            case -1 -> throw new AppException("No se pudo actualizar el notificacion debido a que no se encuentra el registro.", HttpStatus.INTERNAL_SERVER_ERROR);
 
             // no se encuentra el idUser
-            case -2 -> throw new AppException("No se pudo actualizar el tipo notificacion debido a que el usuario asociado no está registrado.", HttpStatus.INTERNAL_SERVER_ERROR);
+            case -2 -> throw new AppException("No se pudo actualizar el notificacion debido a que el usuario asociado no está registrado.", HttpStatus.INTERNAL_SERVER_ERROR);
             
-            default -> throw new AppException("Tipo notificacion no actualizado debido a problemas en la consulta.", HttpStatus.INTERNAL_SERVER_ERROR);
+            default -> throw new AppException("Notificacion no actualizado debido a problemas en la consulta.", HttpStatus.INTERNAL_SERVER_ERROR);
         }
 
     }
@@ -117,17 +118,17 @@ public class NotificationController {
         switch(result) {
             case 1 -> 
             { 
-                ApiResponse<String> response = new ApiResponse<>("Tipo notificacion eliminado correctamente.", null);
+                ApiResponse<String> response = new ApiResponse<>("Notificacion eliminado correctamente.", null);
                 return new ResponseEntity<>(response, HttpStatus.OK); 
             }
 
             // error de MySQL
-            case 0 -> throw new AppException("Ocurrió un error al eliminar el tipo notificacion.", HttpStatus.INTERNAL_SERVER_ERROR);
+            case 0 -> throw new AppException("Ocurrió un error al eliminar el notificacion.", HttpStatus.INTERNAL_SERVER_ERROR);
 
             // no se encuentra el idNotification
-            case -1 -> throw new AppException("No se pudo eliminar el tipo notificacion debido a que no se encuentra el registro.", HttpStatus.INTERNAL_SERVER_ERROR);
+            case -1 -> throw new AppException("No se pudo eliminar el notificacion debido a que no se encuentra el registro.", HttpStatus.INTERNAL_SERVER_ERROR);
 
-            default -> throw new AppException("Tipo notificacion no eliminado debido a problemas en la consulta.", HttpStatus.INTERNAL_SERVER_ERROR);
+            default -> throw new AppException("Notificacion no eliminado debido a problemas en la consulta.", HttpStatus.INTERNAL_SERVER_ERROR);
         }
 
     } 

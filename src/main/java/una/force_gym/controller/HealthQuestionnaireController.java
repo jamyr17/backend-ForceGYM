@@ -32,25 +32,26 @@ public class HealthQuestionnaireController {
     private HealthQuestionnaireService healthQuestionnaireService;
 
     @GetMapping("/list")
-    public ResponseEntity<ApiResponse<Map<String, Object>>> getHealthQuestionnaires(
-        @RequestParam(defaultValue = "1") int page,
-        @RequestParam(defaultValue = "10") int size) {
+    public ResponseEntity<ApiResponse<Map<String, Object>>> getHealthQuestionnaires( 
+            @RequestParam(defaultValue = "1") int page,
+            @RequestParam(defaultValue = "10") int size,
+            @RequestParam(defaultValue = "1") int searchType,
+            @RequestParam(defaultValue = "") String searchTerm,
+            @RequestParam(defaultValue = "") String orderBy,
+            @RequestParam(defaultValue = "") String directionOrderBy,
+            @RequestParam(defaultValue = "") String filterByStatus
+            )  {
         try {
-            List<HealthQuestionnaire> healthQuestionnaires = healthQuestionnaireService.getHealthQuestionnaires(page, size);
-            Long totalRecords = healthQuestionnaireService.countActiveHealthQuestionnaires();
-
-            Map<String, Object> responseData = new HashMap<>();
-            responseData.put("healthQuestionnaires", healthQuestionnaires);
-            responseData.put("totalRecords", totalRecords);
-
+            Map<String, Object> responseData = healthQuestionnaireService.getHealthQuestionnaires(page, size, searchType, searchTerm, orderBy, directionOrderBy, filterByStatus);
             ApiResponse<Map<String, Object>> response = new ApiResponse<>("Cuestionarios de salud obtenidos correctamente.", responseData);
             return new ResponseEntity<>(response, HttpStatus.OK); 
 
         } catch (RuntimeException e) {
-            ApiResponse<Map<String, Object>> response = new ApiResponse<>("Ocurrió un error al obtener los cuestionarios de salud.", null);
+            ApiResponse<Map<String, Object>> response = new ApiResponse<>("Ocurrió un error al solicitar los datos de los cuestionarios de salud.", null);
             return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR); 
         }
-    }
+
+    }   
     
     @PostMapping("/add")
     public ResponseEntity<ApiResponse<String>> addHealthQuestionnaire(@RequestBody HealthQuestionnaireDTO healthQuestionnaireDTO) {

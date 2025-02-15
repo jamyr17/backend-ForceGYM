@@ -32,24 +32,25 @@ public class PermissionController {
     private PermissionService permissionService;
 
     @GetMapping("/list")
-    public ResponseEntity<ApiResponse<Map<String, Object>>> getPermissions(
-        @RequestParam(defaultValue = "1") int page,
-        @RequestParam(defaultValue = "10") int size) {
+    public ResponseEntity<ApiResponse<Map<String, Object>>> getPermissions( 
+            @RequestParam(defaultValue = "1") int page,
+            @RequestParam(defaultValue = "10") int size,
+            @RequestParam(defaultValue = "1") int searchType,
+            @RequestParam(defaultValue = "") String searchTerm,
+            @RequestParam(defaultValue = "") String orderBy,
+            @RequestParam(defaultValue = "") String directionOrderBy,
+            @RequestParam(defaultValue = "") String filterByStatus
+            )  {
         try {
-            List<Permission> Permissions = permissionService.getPermissions(page, size);
-            Long totalRecords = permissionService.countActivePermissions();
-
-            Map<String, Object> responseData = new HashMap<>();
-            responseData.put("Permissions", Permissions);
-            responseData.put("totalRecords", totalRecords);
-
+            Map<String, Object> responseData = permissionService.getPermissions(page, size, searchType, searchTerm, orderBy, directionOrderBy, filterByStatus);
             ApiResponse<Map<String, Object>> response = new ApiResponse<>("Permisos obtenidos correctamente.", responseData);
-            return new ResponseEntity<>(response, HttpStatus.OK);
+            return new ResponseEntity<>(response, HttpStatus.OK); 
 
         } catch (RuntimeException e) {
-            ApiResponse<Map<String, Object>> response = new ApiResponse<>("Ocurrió un error al solicitar los datos de los tipos cliente.", null);
-            return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
+            ApiResponse<Map<String, Object>> response = new ApiResponse<>("Ocurrió un error al solicitar los datos de los permisos.", null);
+            return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR); 
         }
+
     }
     
     @PostMapping("/add")

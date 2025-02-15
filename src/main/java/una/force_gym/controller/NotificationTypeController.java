@@ -32,24 +32,25 @@ public class NotificationTypeController {
     private NotificationTypeService notificationTypeService;
 
     @GetMapping("/list")
-    public ResponseEntity<ApiResponse<Map<String, Object>>> getNotificationTypes(
-        @RequestParam(defaultValue = "1") int page,
-        @RequestParam(defaultValue = "10") int size) {
+    public ResponseEntity<ApiResponse<Map<String, Object>>> getNotificationTypes( 
+            @RequestParam(defaultValue = "1") int page,
+            @RequestParam(defaultValue = "10") int size,
+            @RequestParam(defaultValue = "1") int searchType,
+            @RequestParam(defaultValue = "") String searchTerm,
+            @RequestParam(defaultValue = "") String orderBy,
+            @RequestParam(defaultValue = "") String directionOrderBy,
+            @RequestParam(defaultValue = "") String filterByStatus
+            )  {
         try {
-            List<NotificationType> NotificationTypes = notificationTypeService.getNotificationTypes(page, size);
-            Long totalRecords = notificationTypeService.countActiveIncomes();
-
-            Map<String, Object> responseData = new HashMap<>();
-            responseData.put("NotificationTypes", NotificationTypes);
-            responseData.put("totalRecords", totalRecords);
-
-            ApiResponse<Map<String, Object>> response = new ApiResponse<>("Tipos de notificación obtenidos correctamente.", responseData);
+            Map<String, Object> responseData = notificationTypeService.getNotificationTypes(page, size, searchType, searchTerm, orderBy, directionOrderBy, filterByStatus);
+            ApiResponse<Map<String, Object>> response = new ApiResponse<>("Tipos notificacion obtenidos correctamente.", responseData);
             return new ResponseEntity<>(response, HttpStatus.OK); 
 
         } catch (RuntimeException e) {
-            ApiResponse<Map<String, Object>> response = new ApiResponse<>("Ocurrió un error al solicitar los datos de los ingresos económicos.", null);
+            ApiResponse<Map<String, Object>> response = new ApiResponse<>("Ocurrió un error al solicitar los datos de los tipos notificacion.", null);
             return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR); 
         }
+
     }
     
     @PostMapping("/add")

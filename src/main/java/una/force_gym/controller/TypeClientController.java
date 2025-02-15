@@ -32,24 +32,25 @@ public class TypeClientController {
     private TypeClientService typeClientService;
 
     @GetMapping("/list")
-    public ResponseEntity<ApiResponse<Map<String, Object>>> getTypeClients(
-        @RequestParam(defaultValue = "1") int page,
-        @RequestParam(defaultValue = "10") int size) {
+    public ResponseEntity<ApiResponse<Map<String, Object>>> getTypesClient( 
+            @RequestParam(defaultValue = "1") int page,
+            @RequestParam(defaultValue = "10") int size,
+            @RequestParam(defaultValue = "1") int searchType,
+            @RequestParam(defaultValue = "") String searchTerm,
+            @RequestParam(defaultValue = "") String orderBy,
+            @RequestParam(defaultValue = "") String directionOrderBy,
+            @RequestParam(defaultValue = "") String filterByStatus
+            )  {
         try {
-            List<TypeClient> typeClients = typeClientService.getTypeClients(page, size);
-            Long totalRecords = typeClientService.countActiveTypeClients();
-
-            Map<String, Object> responseData = new HashMap<>();
-            responseData.put("typeClients", typeClients);
-            responseData.put("totalRecords", totalRecords);
-
+            Map<String, Object> responseData = typeClientService.getTypesClient(page, size, searchType, searchTerm, orderBy, directionOrderBy, filterByStatus);
             ApiResponse<Map<String, Object>> response = new ApiResponse<>("Tipos de cliente obtenidos correctamente.", responseData);
-            return new ResponseEntity<>(response, HttpStatus.OK);
+            return new ResponseEntity<>(response, HttpStatus.OK); 
 
         } catch (RuntimeException e) {
-            ApiResponse<Map<String, Object>> response = new ApiResponse<>("Ocurrió un error al solicitar los datos de los tipos cliente.", null);
-            return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
+            ApiResponse<Map<String, Object>> response = new ApiResponse<>("Ocurrió un error al solicitar los datos de los tipos de cliente", null);
+            return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR); 
         }
+
     }
     
     @PostMapping("/add")
