@@ -1,10 +1,6 @@
 package una.force_gym.controller;
 
-import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
-
-import java.time.LocalDate;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -19,7 +15,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import una.force_gym.domain.EconomicExpense;
 import una.force_gym.dto.EconomicExpenseDTO;
 import una.force_gym.dto.ParamLoggedIdUserDTO;
 import una.force_gym.exception.AppException;
@@ -35,23 +30,27 @@ public class EconomicExpenseController {
     private EconomicExpenseService economicExpenseService;
 
     @GetMapping("/list")
-    public ResponseEntity<ApiResponse<Map<String, Object>>> getEconomicExpenses(
+    public ResponseEntity<ApiResponse<Map<String, Object>>> getProductosInventory( 
             @RequestParam(defaultValue = "1") int page,
-            @RequestParam(defaultValue = "10") int size) {
+            @RequestParam(defaultValue = "10") int size,
+            @RequestParam(defaultValue = "1") int searchType,
+            @RequestParam(defaultValue = "") String searchTerm,
+            @RequestParam(defaultValue = "") String orderBy,
+            @RequestParam(defaultValue = "") String directionOrderBy,
+            @RequestParam(defaultValue = "") String filterByStatus,
+            @RequestParam(defaultValue = "") String filterByAmountRange,
+            @RequestParam(defaultValue = "") String filterByDateRange
+            )  {
         try {
-            List<EconomicExpense> economicExpenses = economicExpenseService.getEconomicExpenses(page, size);
-            Long totalRecords = economicExpenseService.countActiveExpenses();
-
-            Map<String, Object> responseData = new HashMap<>();
-            responseData.put("economicExpenses", economicExpenses);
-            responseData.put("totalRecords", totalRecords);
-
+            Map<String, Object> responseData = economicExpenseService.getEconomicExpenses(page, size, searchType, searchTerm, orderBy, directionOrderBy, filterByStatus, filterByAmountRange, filterByDateRange);
             ApiResponse<Map<String, Object>> response = new ApiResponse<>("Gastos económicos obtenidos correctamente.", responseData);
             return new ResponseEntity<>(response, HttpStatus.OK); 
+
         } catch (RuntimeException e) {
-            ApiResponse<Map<String, Object>> response = new ApiResponse<>("Ocurrió un error al solicitar los datos de los gastos económicos.", null);
+            ApiResponse<Map<String, Object>> response = new ApiResponse<>("Ocurrió un error al solicitar los datos de los productos", null);
             return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR); 
         }
+
     }
 
     @PostMapping("/add")
@@ -129,71 +128,5 @@ public class EconomicExpenseController {
         }
 
     }
-
-    @GetMapping("/expensesByAmountRange")
-    public ResponseEntity<ApiResponse<Map<String, Object>>> getEconomicExpensesByAmountRange(
-        @RequestParam double minAmount,
-        @RequestParam double maxAmount,
-        @RequestParam(defaultValue = "1") int page,
-        @RequestParam(defaultValue = "10") int size) {
-        try {
-            List<EconomicExpense> economicExpenses = economicExpenseService.getEconomicExpensesByAmountRange(minAmount, maxAmount, page, size);
-            Long totalRecords = (long) economicExpenses.size(); 
-
-            Map<String, Object> responseData = new HashMap<>();
-            responseData.put("economicExpenses", economicExpenses);
-            responseData.put("totalRecords", totalRecords);
-
-            ApiResponse<Map<String, Object>> response = new ApiResponse<>("Gastos económicos filtrados por rango de montos obtenidos correctamente.", responseData);
-            return new ResponseEntity<>(response, HttpStatus.OK); 
-        } catch (RuntimeException e) {
-            ApiResponse<Map<String, Object>> response = new ApiResponse<>("Ocurrió un error al solicitar los datos de los gastos económicos por rango de montos.", null);
-            return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR); 
-        }
-    }
-
-    @GetMapping("/expensesByDateRange")
-    public ResponseEntity<ApiResponse<Map<String, Object>>> getEconomicExpensesByDateRange(
-        @RequestParam LocalDate startDate,
-        @RequestParam LocalDate endDate,
-        @RequestParam(defaultValue = "1") int page,
-        @RequestParam(defaultValue = "10") int size) {
-        try {
-            List<EconomicExpense> economicExpenses = economicExpenseService.getEconomicExpensesByDateRange(startDate, endDate, page, size);
-            Long totalRecords = (long) economicExpenses.size(); 
-
-            Map<String, Object> responseData = new HashMap<>();
-            responseData.put("economicExpenses", economicExpenses);
-            responseData.put("totalRecords", totalRecords);
-
-            ApiResponse<Map<String, Object>> response = new ApiResponse<>("Gastos económicos filtrados por rango de fechas obtenidos correctamente.", responseData);
-            return new ResponseEntity<>(response, HttpStatus.OK); 
-        } catch (RuntimeException e) {
-            ApiResponse<Map<String, Object>> response = new ApiResponse<>("Ocurrió un error al solicitar los datos de los gastos económicos por rango de fechas.", null);
-            return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR); 
-        }
-    }
-
-    @GetMapping("/search")
-    public ResponseEntity<ApiResponse<Map<String, Object>>> searchEconomicExpenses(
-            @RequestParam String searchTerm,
-            @RequestParam(defaultValue = "1") int page,
-            @RequestParam(defaultValue = "10") int size) {
-        try {
-            List<EconomicExpense> economicExpenses = economicExpenseService.searchEconomicExpenses(searchTerm, page, size);
-            Long totalRecords = economicExpenseService.countExpensesBySearchTerm(searchTerm);
-
-            Map<String, Object> responseData = new HashMap<>();
-            responseData.put("economicExpenses", economicExpenses);
-            responseData.put("totalRecords", totalRecords);
-
-            ApiResponse<Map<String, Object>> response = new ApiResponse<>("Gastos económicos obtenidos correctamente.", responseData);
-            return new ResponseEntity<>(response, HttpStatus.OK);
-        } catch (RuntimeException e) {
-            ApiResponse<Map<String, Object>> response = new ApiResponse<>("Ocurrió un error al solicitar los datos de los gastos económicos.", null);
-            return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
-        }
-    }
-
 
 }

@@ -17,11 +17,12 @@ public class UserFormDTO {
     private String gender;
     private String username;
     private String password;
+    private Long isDeleted;
     private Long paramLoggedIdUser;
 
     public UserFormDTO(){}
 
-    public UserFormDTO(Long idUser, Long idRole, Long idPerson, String name, String firstLastName, String secondLastName, LocalDate birthday, String identificationNumber, String phoneNumber, String email, String gender, String username, String password, Long paramLoggedIdUser) {
+    public UserFormDTO(Long idUser, Long idRole, Long idPerson, String name, String firstLastName, String secondLastName, LocalDate birthday, String identificationNumber, String phoneNumber, String email, String gender, String username, String password, Long isDeleted, Long paramLoggedIdUser) {
         this.birthday = birthday;
         this.idPerson = idPerson;
         this.idRole = idRole;
@@ -36,6 +37,7 @@ public class UserFormDTO {
         this.phoneNumber = phoneNumber;
         this.secondLastName = secondLastName;
         this.username = username;
+        this.isDeleted = isDeleted;
     }
 
     public Long getIdUser() {
@@ -140,6 +142,14 @@ public class UserFormDTO {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public Long getIsDeleted() {
+        return isDeleted;
+    }
+
+    public void setIsDeleted(Long isDeleted) {
+        this.isDeleted = isDeleted;
     }
 
     public Long getParamLoggedIdUser() {
